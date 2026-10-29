@@ -5,9 +5,8 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="theme-color" content="#07111f">
-  <meta name="description" content="Taheerah Technology — exploring ideas, learning technology, and building for a connected world.">
+  <meta name="description" content="Taheerah Technology explores ideas and builds useful digital experiences. Discover TAHEERAH ONE, our social platform concept for photos, short videos, posts, communities, and messaging.">
   <title>Taheerah Technology | Ideas Today. Technology Tomorrow.</title>
-
   <style>
     :root {
       --bg: #07111f;
@@ -18,298 +17,117 @@
       --muted: #aab8ca;
       --border: rgba(232, 199, 121, 0.23);
     }
-
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-      scroll-behavior: smooth;
-    }
-
+    * { margin: 0; padding: 0; box-sizing: border-box; scroll-behavior: smooth; }
     body {
       font-family: Arial, Helvetica, sans-serif;
-      background: var(--bg);
-      color: var(--text);
-      line-height: 1.7;
-      overflow-x: hidden;
+      background: var(--bg); color: var(--text);
+      line-height: 1.7; overflow-x: hidden;
     }
-
-    a {
-      color: inherit;
-      text-decoration: none;
-    }
-
+    a { color: inherit; text-decoration: none; }
     .hero {
-      min-height: 92vh;
-      position: relative;
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      padding: 40px 8%;
-      overflow: hidden;
+      min-height: 92vh; position: relative; display: flex; flex-direction: column;
+      justify-content: center; padding: 110px 8% 55px; overflow: hidden;
       background:
         radial-gradient(ellipse at 75% 35%, rgba(30, 120, 220, .22), transparent 45%),
         radial-gradient(ellipse at 20% 80%, rgba(232, 199, 121, .10), transparent 40%),
         linear-gradient(135deg, #07111f, #0b1c32 55%, #07111f);
     }
-
     .hero::before {
-      content: "";
-      position: absolute;
-      inset: 0;
-      pointer-events: none;
-      opacity: .25;
+      content: ""; position: absolute; inset: 0; pointer-events: none; opacity: .25;
       background-image:
         linear-gradient(rgba(79, 195, 255, .12) 1px, transparent 1px),
         linear-gradient(90deg, rgba(79, 195, 255, .12) 1px, transparent 1px);
       background-size: 48px 48px;
       mask-image: linear-gradient(to bottom, black, transparent 90%);
     }
-
     .navbar {
-      position: absolute;
-      top: 0;
-      left: 0;
-      width: 100%;
-      padding: 22px 8%;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 20px;
-      border-bottom: 1px solid rgba(255,255,255,.08);
-      z-index: 2;
+      position: absolute; top: 0; left: 0; width: 100%; padding: 22px 8%;
+      display: flex; align-items: center; justify-content: space-between; gap: 20px;
+      border-bottom: 1px solid rgba(255,255,255,.08); z-index: 2;
     }
-
-    .brand {
-      color: var(--gold);
-      font-weight: 800;
-      font-size: 1.05rem;
-      letter-spacing: 1.5px;
-    }
-
-    .nav-links {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 24px;
-      color: var(--muted);
-      font-size: .9rem;
-    }
-
-    .nav-links a:hover {
-      color: var(--gold);
-    }
-
-    .hero-content {
-      position: relative;
-      z-index: 1;
-      max-width: 850px;
-      padding-top: 65px;
-    }
-
-    .eyebrow {
-      color: var(--blue);
-      text-transform: uppercase;
-      letter-spacing: 4px;
-      font-size: .75rem;
-      font-weight: bold;
-      margin-bottom: 22px;
-    }
-
-    h1 {
-      font-size: clamp(2.7rem, 8vw, 5.8rem);
-      line-height: 1.08;
-      letter-spacing: -2px;
-      margin-bottom: 25px;
-    }
-
-    h1 span {
-      color: var(--gold);
-    }
-
-    .hero-description {
-      color: var(--muted);
-      font-size: clamp(1rem, 2vw, 1.2rem);
-      max-width: 650px;
-      margin-bottom: 32px;
-    }
-
-    .buttons {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 14px;
-    }
-
+    .brand { color: var(--gold); font-weight: 800; font-size: 1.05rem; letter-spacing: 1.5px; }
+    .nav-links { display: flex; flex-wrap: wrap; gap: 24px; color: var(--muted); font-size: .9rem; }
+    .nav-links a:hover { color: var(--gold); }
+    .hero-content { position: relative; z-index: 1; max-width: 850px; padding-top: 25px; }
+    .eyebrow { color: var(--blue); text-transform: uppercase; letter-spacing: 4px; font-size: .75rem; font-weight: bold; margin-bottom: 22px; }
+    h1 { font-size: clamp(2.7rem, 8vw, 5.8rem); line-height: 1.08; letter-spacing: -2px; margin-bottom: 25px; }
+    h1 span { color: var(--gold); }
+    .hero-description { color: var(--muted); font-size: clamp(1rem, 2vw, 1.2rem); max-width: 650px; margin-bottom: 32px; }
+    .buttons { display: flex; flex-wrap: wrap; gap: 14px; }
     .button {
-      display: inline-block;
-      padding: 13px 23px;
-      border-radius: 5px;
-      font-weight: bold;
-      font-size: .92rem;
-      transition: transform .2s, box-shadow .2s;
+      display: inline-block; padding: 13px 23px; border-radius: 5px; font-weight: bold;
+      font-size: .92rem; transition: transform .2s, box-shadow .2s;
     }
-
-    .button:hover {
-      transform: translateY(-3px);
-    }
-
-    .button-primary {
-      background: var(--gold);
-      color: #101827;
-      box-shadow: 0 0 25px rgba(232,199,121,.15);
-    }
-
-    .button-secondary {
-      border: 1px solid rgba(79,195,255,.65);
-      color: var(--text);
-    }
-
-    section {
-      padding: 85px 8%;
-    }
-
-    .section-heading {
-      max-width: 720px;
-      margin-bottom: 38px;
-    }
-
-    .section-heading .eyebrow {
-      margin-bottom: 12px;
-    }
-
-    h2 {
-      font-size: clamp(2rem, 5vw, 3.2rem);
-      line-height: 1.2;
-      margin-bottom: 16px;
-    }
-
-    .section-heading p,
-    .vision p {
-      color: var(--muted);
-    }
-
-    .projects {
-      background: #091523;
-    }
-
-    .project-grid {
-      display: grid;
-      grid-template-columns: repeat(3, minmax(0, 1fr));
-      gap: 20px;
-    }
-
+    .button:hover { transform: translateY(-3px); }
+    .button-primary { background: var(--gold); color: #101827; box-shadow: 0 0 25px rgba(232,199,121,.15); }
+    .button-secondary { border: 1px solid rgba(79,195,255,.65); color: var(--text); }
+    section { padding: 85px 8%; }
+    .section-heading { max-width: 720px; margin-bottom: 38px; }
+    .section-heading .eyebrow { margin-bottom: 12px; }
+    h2 { font-size: clamp(2rem, 5vw, 3.2rem); line-height: 1.2; margin-bottom: 16px; }
+    .section-heading p, .vision p, .one-intro { color: var(--muted); }
+    .projects { background: #091523; }
+    .project-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 20px; }
     .project-card {
-      padding: 28px;
-      border: 1px solid var(--border);
-      border-radius: 12px;
+      padding: 28px; border: 1px solid var(--border); border-radius: 12px;
       background: linear-gradient(145deg, rgba(18, 38, 61, .95), rgba(9, 21, 35, .95));
       transition: transform .25s, border-color .25s;
     }
-
-    .project-card:hover {
-      transform: translateY(-5px);
-      border-color: var(--blue);
+    .project-card:hover { transform: translateY(-5px); border-color: var(--blue); }
+    .project-icon { font-size: 2rem; margin-bottom: 18px; }
+    .project-card h3 { color: var(--gold); margin-bottom: 12px; font-size: 1.2rem; }
+    .project-card p { color: var(--muted); font-size: .95rem; }
+    .project-status { display: inline-block; margin-top: 20px; color: var(--blue); font-size: .78rem; letter-spacing: 1px; text-transform: uppercase; }
+    .one-section {
+      position: relative; overflow: hidden;
+      background: radial-gradient(ellipse at 50% 0%, rgba(30,120,220,.18), transparent 60%), var(--bg);
     }
-
-    .project-icon {
-      font-size: 2rem;
-      margin-bottom: 18px;
+    .one-wrap {
+      max-width: 1100px; margin: 0 auto; padding: clamp(26px, 5vw, 58px);
+      border: 1px solid var(--border); border-radius: 22px;
+      background: linear-gradient(145deg, rgba(13,27,45,.96), rgba(7,17,31,.96));
+      box-shadow: 0 20px 70px rgba(0,0,0,.2);
     }
-
-    .project-card h3 {
-      color: var(--gold);
-      margin-bottom: 12px;
-      font-size: 1.2rem;
+    .one-label { color: var(--gold); letter-spacing: 4px; text-transform: uppercase; font-size: .76rem; font-weight: 700; margin-bottom: 12px; }
+    .one-title { font-size: clamp(2.5rem, 7vw, 4.6rem); letter-spacing: -1.5px; margin-bottom: 10px; }
+    .one-title span { color: var(--gold); }
+    .one-tagline { color: var(--blue); font-size: clamp(1.1rem, 2.5vw, 1.45rem); margin-bottom: 18px; }
+    .one-intro { max-width: 760px; margin-bottom: 28px; }
+    .feature-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 14px; margin: 28px 0; }
+    .feature {
+      padding: 19px; border: 1px solid rgba(79,195,255,.2); border-radius: 12px;
+      background: rgba(255,255,255,.025);
     }
-
-    .project-card p {
-      color: var(--muted);
-      font-size: .95rem;
-    }
-
-    .project-status {
-      display: inline-block;
-      margin-top: 20px;
-      color: var(--blue);
-      font-size: .78rem;
-      letter-spacing: 1px;
-      text-transform: uppercase;
-    }
-
+    .feature .icon { font-size: 1.7rem; margin-bottom: 8px; }
+    .feature h3 { color: var(--gold); font-size: 1rem; margin-bottom: 6px; }
+    .feature p { color: var(--muted); font-size: .9rem; }
+    .status-note { color: var(--muted); font-size: .85rem; margin-top: 20px; }
     .vision {
       text-align: center;
-      background:
-        radial-gradient(ellipse at center, rgba(30, 120, 220, .13), transparent 65%),
-        var(--bg);
+      background: radial-gradient(ellipse at center, rgba(30, 120, 220, .13), transparent 65%), var(--bg);
     }
-
-    .vision-inner {
-      max-width: 800px;
-      margin: 0 auto;
-    }
-
-    .vision p {
-      margin: 0 auto 28px;
-      max-width: 650px;
-    }
-
+    .vision-inner { max-width: 800px; margin: 0 auto; }
+    .vision p { margin: 0 auto 28px; max-width: 650px; }
     .footer {
-      padding: 30px 8%;
-      border-top: 1px solid rgba(255,255,255,.09);
-      display: flex;
-      justify-content: space-between;
-      flex-wrap: wrap;
-      gap: 12px;
-      color: var(--muted);
-      font-size: .85rem;
+      padding: 30px 8%; border-top: 1px solid rgba(255,255,255,.09);
+      display: flex; justify-content: space-between; flex-wrap: wrap; gap: 12px;
+      color: var(--muted); font-size: .85rem;
     }
-
-    .footer strong {
-      color: var(--gold);
-    }
-
+    .footer strong { color: var(--gold); }
     @media (max-width: 760px) {
-      .navbar {
-        align-items: flex-start;
-        flex-direction: column;
-        padding: 18px 6%;
-      }
-
-      .nav-links {
-        gap: 14px;
-        font-size: .82rem;
-      }
-
-      .hero {
-        min-height: 85vh;
-        padding: 35px 6%;
-      }
-
-      h1 {
-        letter-spacing: -1px;
-      }
-
-      section {
-        padding: 65px 6%;
-      }
-
-      .project-grid {
-        grid-template-columns: 1fr;
-      }
-
-      .footer {
-        padding: 25px 6%;
-      }
+      .navbar { align-items: flex-start; flex-direction: column; padding: 18px 6%; }
+      .nav-links { gap: 14px; font-size: .82rem; }
+      .hero { min-height: 85vh; padding: 140px 6% 45px; }
+      h1 { letter-spacing: -1px; }
+      section { padding: 65px 6%; }
+      .project-grid, .feature-grid { grid-template-columns: 1fr; }
+      .footer { padding: 25px 6%; }
     }
-
     @media (prefers-reduced-motion: reduce) {
-      *, *::before, *::after {
-        scroll-behavior: auto !important;
-        transition: none !important;
-      }
+      *, *::before, *::after { scroll-behavior: auto !important; transition: none !important; }
     }
   </style>
 </head>
-
 <body>
   <header class="hero" id="home">
     <nav class="navbar" aria-label="Main navigation">
@@ -317,10 +135,10 @@
       <div class="nav-links">
         <a href="#home">Home</a>
         <a href="#projects">Projects</a>
+        <a href="#taheerah-one">TAHEERAH ONE</a>
         <a href="#vision">Our Vision</a>
       </div>
     </nav>
-
     <div class="hero-content">
       <p class="eyebrow">Ideas • Innovation • Technology</p>
       <h1>Ideas Today.<br><span>Technology Tomorrow.</span></h1>
@@ -328,10 +146,9 @@
         Exploring bold ideas, learning new technologies, and building useful
         digital experiences for a more connected world.
       </p>
-
       <div class="buttons">
         <a class="button button-primary" href="#projects">Explore Our Projects</a>
-        <a class="button button-secondary" href="#vision">Discover Our Vision</a>
+        <a class="button button-secondary" href="#taheerah-one">Discover TAHEERAH ONE</a>
       </div>
     </div>
   </header>
@@ -341,42 +158,73 @@
       <div class="section-heading">
         <p class="eyebrow">What We're Exploring</p>
         <h2>Ideas becoming possibilities.</h2>
-        <p>
-          We are learning, experimenting, and developing ideas one step at a time.
-          Every great innovation starts with curiosity.
-        </p>
+        <p>We are learning, experimenting, and developing ideas one step at a time. Every great innovation starts with curiosity.</p>
       </div>
-
       <div class="project-grid">
         <article class="project-card">
           <div class="project-icon" aria-hidden="true">📈</div>
           <h3>Taheerah Capital Trading Academy</h3>
-          <p>
-            An educational project exploring financial-market concepts,
-            trading fundamentals, and responsible risk awareness.
-          </p>
+          <p>An educational project exploring financial-market concepts, trading fundamentals, and responsible risk awareness.</p>
           <span class="project-status">Learning Project</span>
         </article>
-
         <article class="project-card">
           <div class="project-icon" aria-hidden="true">💻</div>
           <h3>Technology Lab</h3>
-          <p>
-            A space for learning web development, experimenting with software,
-            and turning simple ideas into digital projects.
-          </p>
+          <p>A space for learning web development, experimenting with software, and turning simple ideas into digital projects.</p>
           <span class="project-status">In Development</span>
         </article>
-
         <article class="project-card">
           <div class="project-icon" aria-hidden="true">🌐</div>
           <h3>Future Innovations</h3>
-          <p>
-            Exploring ideas that could help people connect, solve problems,
-            and access useful technology in everyday life.
-          </p>
+          <p>Exploring ideas that could help people connect, solve problems, and access useful technology in everyday life.</p>
           <span class="project-status">Exploring Ideas</span>
         </article>
+      </div>
+    </section>
+
+    <section class="one-section" id="taheerah-one">
+      <div class="one-wrap">
+        <p class="one-label">Our Social Platform Concept</p>
+        <h2 class="one-title">TAHEERAH <span>ONE</span></h2>
+        <p class="one-tagline">Create once. Connect everywhere.</p>
+        <p class="one-intro">
+          A vision for a social platform where people can share their creativity,
+          discover short videos, publish posts, join communities, and connect
+          with people around the world—all in one place.
+        </p>
+        <div class="feature-grid">
+          <article class="feature">
+            <div class="icon" aria-hidden="true">📸</div>
+            <h3>Photos & Stories</h3>
+            <p>Share moments, photos, and creative stories with your audience.</p>
+          </article>
+          <article class="feature">
+            <div class="icon" aria-hidden="true">🎬</div>
+            <h3>Short Videos</h3>
+            <p>Explore entertaining and educational short-form videos.</p>
+          </article>
+          <article class="feature">
+            <div class="icon" aria-hidden="true">📝</div>
+            <h3>Posts & Discussions</h3>
+            <p>Share ideas, reply to posts, and join conversations.</p>
+          </article>
+          <article class="feature">
+            <div class="icon" aria-hidden="true">👥</div>
+            <h3>Communities</h3>
+            <p>Find people with shared interests and build groups together.</p>
+          </article>
+          <article class="feature">
+            <div class="icon" aria-hidden="true">💬</div>
+            <h3>Messaging</h3>
+            <p>Connect with friends through private conversations.</p>
+          </article>
+          <article class="feature">
+            <div class="icon" aria-hidden="true">🌍</div>
+            <h3>Global Connection</h3>
+            <p>Make space for people and creators from different places and cultures.</p>
+          </article>
+        </div>
+        <p class="status-note"><strong>Current stage:</strong> Concept and early development. These features are planned; they are not live app functions yet.</p>
       </div>
     </section>
 
@@ -394,7 +242,6 @@
       </div>
     </section>
   </main>
-
   <footer class="footer">
     <p><strong>TAHEERAH TECHNOLOGY</strong></p>
     <p>Learning today. Building for tomorrow. © 2026</p>
