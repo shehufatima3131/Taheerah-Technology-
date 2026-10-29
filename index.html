@@ -1,210 +1,403 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Taheerah Technology | Building for the World</title>
-  <meta name="description" content="Explore Taheerah Technology — learning, building, and creating projects for the world.">
+  <meta name="theme-color" content="#07111f">
+  <meta name="description" content="Taheerah Technology — exploring ideas, learning technology, and building for a connected world.">
+  <title>Taheerah Technology | Ideas Today. Technology Tomorrow.</title>
 
   <style>
+    :root {
+      --bg: #07111f;
+      --panel: #0d1b2d;
+      --gold: #e8c779;
+      --blue: #4fc3ff;
+      --text: #f4f7fc;
+      --muted: #aab8ca;
+      --border: rgba(232, 199, 121, 0.23);
+    }
+
     * {
-      box-sizing: border-box;
       margin: 0;
       padding: 0;
+      box-sizing: border-box;
+      scroll-behavior: smooth;
     }
 
     body {
-      font-family: Arial, sans-serif;
-      background: #0b1020;
-      color: #ffffff;
-      line-height: 1.6;
+      font-family: Arial, Helvetica, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.7;
+      overflow-x: hidden;
     }
 
-    header {
-      padding: 22px 8%;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      flex-wrap: wrap;
-      gap: 12px;
-      background: #111a32;
-    }
-
-    .logo {
-      color: #f5c96a;
-      font-size: 23px;
-      font-weight: bold;
-    }
-
-    nav a {
-      color: #ffffff;
+    a {
+      color: inherit;
       text-decoration: none;
-      margin-left: 15px;
-      font-size: 14px;
     }
 
     .hero {
-      text-align: center;
-      padding: 85px 20px;
-      background: linear-gradient(135deg, #111a32, #263d70);
+      min-height: 92vh;
+      position: relative;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      padding: 40px 8%;
+      overflow: hidden;
+      background:
+        radial-gradient(ellipse at 75% 35%, rgba(30, 120, 220, .22), transparent 45%),
+        radial-gradient(ellipse at 20% 80%, rgba(232, 199, 121, .10), transparent 40%),
+        linear-gradient(135deg, #07111f, #0b1c32 55%, #07111f);
     }
 
-    .tag {
-      color: #f5c96a;
+    .hero::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+      opacity: .25;
+      background-image:
+        linear-gradient(rgba(79, 195, 255, .12) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(79, 195, 255, .12) 1px, transparent 1px);
+      background-size: 48px 48px;
+      mask-image: linear-gradient(to bottom, black, transparent 90%);
+    }
+
+    .navbar {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      padding: 22px 8%;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 20px;
+      border-bottom: 1px solid rgba(255,255,255,.08);
+      z-index: 2;
+    }
+
+    .brand {
+      color: var(--gold);
+      font-weight: 800;
+      font-size: 1.05rem;
+      letter-spacing: 1.5px;
+    }
+
+    .nav-links {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 24px;
+      color: var(--muted);
+      font-size: .9rem;
+    }
+
+    .nav-links a:hover {
+      color: var(--gold);
+    }
+
+    .hero-content {
+      position: relative;
+      z-index: 1;
+      max-width: 850px;
+      padding-top: 65px;
+    }
+
+    .eyebrow {
+      color: var(--blue);
+      text-transform: uppercase;
+      letter-spacing: 4px;
+      font-size: .75rem;
       font-weight: bold;
-      letter-spacing: 2px;
-      font-size: 12px;
+      margin-bottom: 22px;
     }
 
     h1 {
-      font-size: clamp(36px, 8vw, 58px);
-      line-height: 1.15;
-      margin: 20px 0;
+      font-size: clamp(2.7rem, 8vw, 5.8rem);
+      line-height: 1.08;
+      letter-spacing: -2px;
+      margin-bottom: 25px;
     }
 
-    .hero p {
-      max-width: 600px;
-      margin: 0 auto 28px;
-      color: #d5dcef;
-      font-size: 17px;
+    h1 span {
+      color: var(--gold);
+    }
+
+    .hero-description {
+      color: var(--muted);
+      font-size: clamp(1rem, 2vw, 1.2rem);
+      max-width: 650px;
+      margin-bottom: 32px;
+    }
+
+    .buttons {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 14px;
     }
 
     .button {
       display: inline-block;
-      padding: 13px 22px;
-      margin: 6px;
-      border-radius: 8px;
-      text-decoration: none;
+      padding: 13px 23px;
+      border-radius: 5px;
       font-weight: bold;
-      background: #f5c96a;
-      color: #111a32;
+      font-size: .92rem;
+      transition: transform .2s, box-shadow .2s;
     }
 
-    .button.secondary {
-      border: 1px solid #f5c96a;
-      background: transparent;
-      color: #ffffff;
+    .button:hover {
+      transform: translateY(-3px);
+    }
+
+    .button-primary {
+      background: var(--gold);
+      color: #101827;
+      box-shadow: 0 0 25px rgba(232,199,121,.15);
+    }
+
+    .button-secondary {
+      border: 1px solid rgba(79,195,255,.65);
+      color: var(--text);
     }
 
     section {
-      padding: 55px 8%;
-      text-align: center;
+      padding: 85px 8%;
     }
 
-    section h2 {
-      font-size: 30px;
+    .section-heading {
+      max-width: 720px;
+      margin-bottom: 38px;
+    }
+
+    .section-heading .eyebrow {
       margin-bottom: 12px;
-      color: #f5c96a;
     }
 
-    .intro {
-      max-width: 650px;
-      margin: 0 auto 30px;
-      color: #d5dcef;
+    h2 {
+      font-size: clamp(2rem, 5vw, 3.2rem);
+      line-height: 1.2;
+      margin-bottom: 16px;
     }
 
-    .cards {
+    .section-heading p,
+    .vision p {
+      color: var(--muted);
+    }
+
+    .projects {
+      background: #091523;
+    }
+
+    .project-grid {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-      gap: 18px;
-      margin-top: 28px;
-      text-align: left;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 20px;
     }
 
-    .card {
-      background: #151f39;
-      padding: 25px;
-      border: 1px solid #293858;
-      border-radius: 14px;
+    .project-card {
+      padding: 28px;
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      background: linear-gradient(145deg, rgba(18, 38, 61, .95), rgba(9, 21, 35, .95));
+      transition: transform .25s, border-color .25s;
     }
 
-    .card h3 {
-      color: #f5c96a;
-      margin-bottom: 10px;
+    .project-card:hover {
+      transform: translateY(-5px);
+      border-color: var(--blue);
     }
 
-    .card p {
-      color: #d5dcef;
+    .project-icon {
+      font-size: 2rem;
+      margin-bottom: 18px;
     }
 
-    footer {
-      padding: 25px 15px;
+    .project-card h3 {
+      color: var(--gold);
+      margin-bottom: 12px;
+      font-size: 1.2rem;
+    }
+
+    .project-card p {
+      color: var(--muted);
+      font-size: .95rem;
+    }
+
+    .project-status {
+      display: inline-block;
+      margin-top: 20px;
+      color: var(--blue);
+      font-size: .78rem;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+    }
+
+    .vision {
       text-align: center;
-      background: #070b16;
-      color: #aeb9d2;
-      font-size: 13px;
+      background:
+        radial-gradient(ellipse at center, rgba(30, 120, 220, .13), transparent 65%),
+        var(--bg);
+    }
+
+    .vision-inner {
+      max-width: 800px;
+      margin: 0 auto;
+    }
+
+    .vision p {
+      margin: 0 auto 28px;
+      max-width: 650px;
+    }
+
+    .footer {
+      padding: 30px 8%;
+      border-top: 1px solid rgba(255,255,255,.09);
+      display: flex;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 12px;
+      color: var(--muted);
+      font-size: .85rem;
+    }
+
+    .footer strong {
+      color: var(--gold);
+    }
+
+    @media (max-width: 760px) {
+      .navbar {
+        align-items: flex-start;
+        flex-direction: column;
+        padding: 18px 6%;
+      }
+
+      .nav-links {
+        gap: 14px;
+        font-size: .82rem;
+      }
+
+      .hero {
+        min-height: 85vh;
+        padding: 35px 6%;
+      }
+
+      h1 {
+        letter-spacing: -1px;
+      }
+
+      section {
+        padding: 65px 6%;
+      }
+
+      .project-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .footer {
+        padding: 25px 6%;
+      }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after {
+        scroll-behavior: auto !important;
+        transition: none !important;
+      }
     }
   </style>
 </head>
 
 <body>
-  <header>
-    <div class="logo">Taheerah Technology 🌍</div>
-    <nav>
-      <a href="#home">Home</a>
-      <a href="#projects">Projects</a>
-      <a href="#vision">Our Vision</a>
+  <header class="hero" id="home">
+    <nav class="navbar" aria-label="Main navigation">
+      <a class="brand" href="#home">TAHEERAH TECHNOLOGY</a>
+      <div class="nav-links">
+        <a href="#home">Home</a>
+        <a href="#projects">Projects</a>
+        <a href="#vision">Our Vision</a>
+      </div>
     </nav>
+
+    <div class="hero-content">
+      <p class="eyebrow">Ideas • Innovation • Technology</p>
+      <h1>Ideas Today.<br><span>Technology Tomorrow.</span></h1>
+      <p class="hero-description">
+        Exploring bold ideas, learning new technologies, and building useful
+        digital experiences for a more connected world.
+      </p>
+
+      <div class="buttons">
+        <a class="button button-primary" href="#projects">Explore Our Projects</a>
+        <a class="button button-secondary" href="#vision">Discover Our Vision</a>
+      </div>
+    </div>
   </header>
 
   <main>
-    <section class="hero" id="home">
-      <div class="tag">LEARN • BUILD • CREATE</div>
-      <h1>Ideas Today.<br>Technology Tomorrow.</h1>
-      <p>
-        Welcome to Taheerah Technology — my journey of learning,
-        building, and creating projects for the world.
-      </p>
-      <a class="button" href="#projects">Explore Our Projects</a>
-      <a class="button secondary" href="#vision">Our Vision</a>
-    </section>
+    <section class="projects" id="projects">
+      <div class="section-heading">
+        <p class="eyebrow">What We're Exploring</p>
+        <h2>Ideas becoming possibilities.</h2>
+        <p>
+          We are learning, experimenting, and developing ideas one step at a time.
+          Every great innovation starts with curiosity.
+        </p>
+      </div>
 
-    <section id="projects">
-      <h2>Our Projects</h2>
-      <p class="intro">
-        Every great idea starts with learning. Explore the projects
-        we are developing as we grow our skills.
-      </p>
-
-      <div class="cards">
-        <article class="card">
-          <h3>📚 Trading Academy</h3>
+      <div class="project-grid">
+        <article class="project-card">
+          <div class="project-icon" aria-hidden="true">📈</div>
+          <h3>Taheerah Capital Trading Academy</h3>
           <p>
-            A learning project designed to help beginners understand
-            trading concepts, charts, and risk management.
+            An educational project exploring financial-market concepts,
+            trading fundamentals, and responsible risk awareness.
           </p>
+          <span class="project-status">Learning Project</span>
         </article>
 
-        <article class="card">
-          <h3>💡 Technology Lab</h3>
+        <article class="project-card">
+          <div class="project-icon" aria-hidden="true">💻</div>
+          <h3>Technology Lab</h3>
           <p>
-            A space for exploring ideas, practising new skills,
-            and building useful digital projects.
+            A space for learning web development, experimenting with software,
+            and turning simple ideas into digital projects.
           </p>
+          <span class="project-status">In Development</span>
         </article>
 
-        <article class="card">
-          <h3>🌍 Future Innovations</h3>
+        <article class="project-card">
+          <div class="project-icon" aria-hidden="true">🌐</div>
+          <h3>Future Innovations</h3>
           <p>
-            Exploring ideas that could help people connect,
-            learn, and solve problems around the world.
+            Exploring ideas that could help people connect, solve problems,
+            and access useful technology in everyday life.
           </p>
+          <span class="project-status">Exploring Ideas</span>
         </article>
       </div>
     </section>
 
-    <section id="vision">
-      <h2>Our Vision</h2>
-      <p class="intro">
-        To keep learning, create meaningful technology, and build
-        projects that can make a positive difference around the world.
-      </p>
-      <a class="button" href="#home">Back to Top ↑</a>
+    <section class="vision" id="vision">
+      <div class="vision-inner">
+        <p class="eyebrow">Our Vision</p>
+        <h2>Think beyond borders.</h2>
+        <p>
+          Our ambition is to learn, create, and explore technology that can be
+          useful to people in different communities and countries. We believe
+          progress begins with curiosity, consistent learning, and ideas put
+          into action.
+        </p>
+        <a class="button button-primary" href="#home">Back to the Top ↑</a>
+      </div>
     </section>
   </main>
 
-  <footer>
-    © 2026 Taheerah Technology. Learning, Building & Creating for the World.
+  <footer class="footer">
+    <p><strong>TAHEERAH TECHNOLOGY</strong></p>
+    <p>Learning today. Building for tomorrow. © 2026</p>
   </footer>
 </body>
 </html>
