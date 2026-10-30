@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>TAHEERAH ONE | Join the World</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: Arial, sans-serif;
+    }
+
+    body {
+      min-height: 100vh;
+      background: linear-gradient(135deg, #10152d, #35205e, #111a38);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: 25px;
+      color: white;
+    }
+
+    .container {
+      width: 100%;
+      max-width: 430px;
+      background: rgba(255,255,255,0.09);
+      border: 1px solid rgba(255,255,255,0.18);
+      border-radius: 24px;
+      padding: 35px 28px;
+      backdrop-filter: blur(15px);
+      box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+    }
+
+    .logo {
+      text-align: center;
+      font-size: 30px;
+      font-weight: bold;
+      letter-spacing: 2px;
+      margin-bottom: 10px;
+    }
+
+    .logo span {
+      color: #d6a6ff;
+    }
+
+    .tagline {
+      text-align: center;
+      color: #d7d4e7;
+      font-size: 13px;
+      margin-bottom: 30px;
+    }
+
+    h2 {
+      text-align: center;
+      margin-bottom: 22px;
+      font-size: 23px;
+    }
+
+    .tabs {
+      display: flex;
+      background: rgba(0,0,0,0.2);
+      border-radius: 12px;
+      padding: 5px;
+      margin-bottom: 24px;
+    }
+
+    .tabs button {
+      width: 50%;
+      padding: 12px;
+      border: none;
+      border-radius: 9px;
+      background: transparent;
+      color: white;
+      cursor: pointer;
+      font-weight: bold;
+    }
+
+    .tabs button.active {
+      background: #b77cff;
+      color: #17112a;
+    }
+
+    .field {
+      margin-bottom: 17px;
+    }
+
+    label {
+      display: block;
+      margin-bottom: 8px;
+      font-size: 13px;
+      color: #e7def7;
+    }
+
+    input {
+      width: 100%;
+      padding: 14px;
+      border: 1px solid rgba(255,255,255,0.2);
+      border-radius: 10px;
+      background: rgba(255,255,255,0.09);
+      color: white;
+      outline: none;
+      font-size: 14px;
+    }
+
+    input::placeholder {
+      color: #bcb6ca;
+    }
+
+    .submit {
+      width: 100%;
+      padding: 15px;
+      border: none;
+      border-radius: 11px;
+      background: linear-gradient(90deg, #c18aff, #8c66ff);
+      color: #17112a;
+      font-size: 15px;
+      font-weight: bold;
+      cursor: pointer;
+      margin-top: 8px;
+    }
+
+    .switch-text {
+      text-align: center;
+      color: #d7d4e7;
+      font-size: 13px;
+      margin-top: 23px;
+    }
+
+    .switch-text button {
+      background: none;
+      border: none;
+      color: #d6a6ff;
+      font-weight: bold;
+      cursor: pointer;
+    }
+
+    .footer {
+      text-align: center;
+      font-size: 11px;
+      color: #aaa3bd;
+      margin-top: 25px;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="container">
+
+    <div class="logo">TAHEERAH <span>ONE</span></div>
+    <p class="tagline">Create once. Connect everywhere. 🌍</p>
+
+    <h2 id="heading">Create your account</h2>
+
+    <div class="tabs">
+      <button id="signupTab" class="active" onclick="showSignup()">Sign Up</button>
+      <button id="loginTab" onclick="showLogin()">Login</button>
+    </div>
+
+    <form id="authForm">
+      <div class="field" id="nameField">
+        <label>Full Name</label>
+        <input type="text" id="fullName" placeholder="Enter your full name">
+      </div>
+
+      <div class="field">
+        <label>Email Address</label>
+        <input type="email" id="email" placeholder="Enter your email" required>
+      </div>
+
+      <div class="field">
+        <label>Password</label>
+        <input type="password" id="password" placeholder="Create a password" required minlength="6">
+      </div>
+
+      <button class="submit" type="submit" id="submitBtn">Create Account</button>
+    </form>
+
+    <p class="switch-text" id="switchText">
+      Already have an account?
+      <button onclick="showLogin()">Login</button>
+    </p>
+
+    <p class="footer">© 2026 TAHEERAH ONE. All rights reserved.</p>
+
+  </div>
+
+  <script>
+    let currentMode = "signup";
+
+    function showSignup() {
+      currentMode = "signup";
+      document.getElementById("heading").textContent = "Create your account";
+      document.getElementById("nameField").style.display = "block";
+      document.getElementById("submitBtn").textContent = "Create Account";
+      document.getElementById("signupTab").classList.add("active");
+      document.getElementById("loginTab").classList.remove("active");
+      document.getElementById("switchText").innerHTML =
+        'Already have an account? <button type="button" onclick="showLogin()">Login</button>';
+    }
+
+    function showLogin() {
+      currentMode = "login";
+      document.getElementById("heading").textContent = "Welcome back";
+      document.getElementById("nameField").style.display = "none";
+      document.getElementById("submitBtn").textContent = "Login";
+      document.getElementById("signupTab").classList.remove("active");
+      document.getElementById("loginTab").classList.add("active");
+      document.getElementById("switchText").innerHTML =
+        'New to TAHEERAH ONE? <button type="button" onclick="showSignup()">Sign Up</button>';
+    }
+
+    document.getElementById("authForm").addEventListener("submit", function(event) {
+      event.preventDefault();
+      alert("TAHEERAH ONE: We will connect your account to Supabase in our next step!");
+    });
+  </script>
+</body>
+</html>
