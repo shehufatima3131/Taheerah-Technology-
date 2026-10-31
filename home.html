@@ -1,0 +1,269 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>TAHEERAH ONE - Home</title>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+<style>
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  font-family: Arial, sans-serif;
+  background: #100b20;
+  color: white;
+}
+
+header {
+  padding: 20px;
+  background: #1d1235;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 1px solid #39265a;
+}
+
+.logo {
+  font-size: 22px;
+  font-weight: bold;
+  color: #d8aaff;
+}
+
+button {
+  border: none;
+  padding: 11px 17px;
+  border-radius: 10px;
+  background: #a855f7;
+  color: white;
+  cursor: pointer;
+}
+
+main {
+  max-width: 650px;
+  margin: 25px auto;
+  padding: 15px;
+}
+
+.welcome {
+  margin-bottom: 25px;
+}
+
+.welcome h1 {
+  color: #d8aaff;
+}
+
+.create-post, .post {
+  background: #211735;
+  padding: 20px;
+  border-radius: 15px;
+  margin-bottom: 20px;
+  border: 1px solid #39265a;
+}
+
+textarea {
+  width: 100%;
+  min-height: 100px;
+  padding: 15px;
+  border-radius: 10px;
+  background: #100b20;
+  color: white;
+  border: 1px solid #65418c;
+  resize: vertical;
+  margin-bottom: 12px;
+}
+
+.post small {
+  color: #c5a6e8;
+}
+
+.post p {
+  line-height: 1.6;
+  overflow-wrap: anywhere;
+}
+
+#message {
+  color: #d8aaff;
+  margin: 15px 0;
+}
+
+nav {
+  display: flex;
+  justify-content: space-around;
+  padding: 18px;
+  background: #1d1235;
+  position: sticky;
+  bottom: 0;
+}
+
+nav span {
+  color: #d8aaff;
+  font-size: 14px;
+}
+
+</style>
+</head>
+
+<body>
+
+<header>
+  <div class="logo">TAHEERAH ONE</div>
+  <button id="logout">Logout</button>
+</header>
+
+<main>
+
+  <section class="welcome">
+    <h1>Welcome to TAHEERAH ONE 💜</h1>
+    <p>Create once. Connect everywhere.</p>
+    <p id="username">Welcome, member!</p>
+  </section>
+
+  <section class="create-post">
+    <h3>What's happening?</h3>
+
+    <form id="postForm">
+      <textarea id="caption"
+      placeholder="Share something with the world..."></textarea>
+
+      <button type="submit" id="postButton">
+        Publish Post
+      </button>
+    </form>
+  </section>
+
+  <h2>🌍 Your Feed</h2>
+
+  <div id="message"></div>
+  <section id="feed"></section>
+
+</main>
+
+<nav>
+  <span>🏠 Home</span>
+  <span>🔍 Explore</span>
+  <span>➕ Create</span>
+  <span>🔔 Alerts</span>
+  <span>👤 Profile</span>
+</nav>
+
+<script>
+const SUPABASE_URL = "https://yfkmkjqtgaqbpvjfebog.supabase.co";
+
+const SUPABASE_PUBLISHABLE_KEY = " sb_publishable_nJb5URtJy3_LOsEeU4TvcA_JQ_T4uep";
+
+const supabaseClient = window.supabase.createClient(
+  SUPABASE_URL,
+  SUPABASE_PUBLISHABLE_KEY
+);
+
+let currentUser = null;
+
+const message = document.getElementById("message");
+const feed = document.getElementById("feed");
+
+async function startApp() {
+  const { data, error } = await supabaseClient.auth.getSession();
+
+  if (error || !data.session) {
+    window.location.href = "auth.html";
+    return;
+  }
+
+  currentUser = data.session.user;
+
+  document.getElementById("username").textContent =
+    "Welcome, " + (currentUser.user_metadata.full_name || "Member") + "!";
+
+  loadPosts();
+}
+
+async function loadPosts() {
+  message.textContent = "Loading posts...";
+
+  const { data, error } = await supabaseClient
+    .from("posts")
+    .select("*")
+    .order("created_at", { ascending: false });
+
+  if (error) {
+    message.textContent = "Could not load posts: " + error.message;
+    return;
+  }
+
+  feed.innerHTML = "";
+
+  if (!data || data.length === 0) {
+    message.textContent = "No posts yet. Be the first to share something! 💜";
+    return;
+  }
+
+  message.textContent = "";
+
+  data.forEach(post => {
+    const card = document.createElement("article");
+    card.className = "post";
+
+    const author = document.createElement("small");
+    author.textContent = "TAHEERAH ONE Member";
+
+    const caption = document.createElement("p");
+    caption.textContent = post.caption || "";
+
+    const date = document.createElement("small");
+    date.textContent = new Date(post.created_at).toLocaleString();
+
+    card.append(author, caption, date);
+    feed.appendChild(card);
+  });
+}
+
+document.getElementById("postForm").addEventListener("submit", async (e) => {
+  e.preventDefault();
+
+  const caption = document.getElementById("caption").value.trim();
+
+  if (!caption) {
+    message.textContent = "Please write something first.";
+    return;
+  }
+
+  const button = document.getElementById("postButton");
+  button.disabled = true;
+  button.textContent = "Publishing...";
+
+  const { error } = await supabaseClient
+    .from("posts")
+    .insert({
+      user_id: currentUser.id,
+      caption: caption
+    });
+
+  button.disabled = false;
+  button.textContent = "Publish Post";
+
+  if (error) {
+    message.textContent = error.message;
+    return;
+  }
+
+  document.getElementById("caption").value = "";
+  message.textContent = "Your post has been published! 🎉";
+
+  loadPosts();
+});
+
+document.getElementById("logout").addEventListener("click", async () => {
+  await supabaseClient.auth.signOut();
+  window.location.href = "auth.html";
+});
+
+startApp();
+</script>
+
+</body>
+</html>
