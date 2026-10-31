@@ -1,62 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>TAHEERAH ONE | Join the World</title>
-  <style>
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-      font-family: Arial, sans-serif;
-    }
-
-    body {
-      min-height: 100vh;
-      background: linear-gradient(135deg, #10152d, #35205e, #111a38);
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      padding: 25px;
-      color: white;
-    }
-
-    .container {
-      width: 100%;
-      max-width: 430px;
-      background: rgba(255,255,255,0.09);
-      border: 1px solid rgba(255,255,255,0.18);
-      border-radius: 24px;
-      padding: 35px 28px;
-      backdrop-filter: blur(15px);
-      box-shadow: 0 20px 60px rgba(0,0,0,0.3);
-    }
-
-    .logo {
-      text-align: center;
-      font-size: 30px;
-      font-weight: bold;
-      letter-spacing: 2px;
-      margin-bottom: 10px;
-    }
-
-    .logo span {
-      color: #d6a6ff;
-    }
-
-    .tagline {
-      text-align: center;
-      color: #d7d4e7;
-      font-size: 13px;
-      margin-bottom: 30px;
-    }
-
-    h2 {
-      text-align: center;
-      <!DOCTYPE html>
-<html lang="en">
-<head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>TAHEERAH ONE | Create. Connect. Explore.</title>
@@ -82,315 +26,224 @@ body {
     align-items: center;
     justify-content: center;
     padding: 25px;
-    overflow-x: hidden;
-}
-
-.glow {
-    position: fixed;
-    width: 260px;
-    height: 260px;
-    background: #a855f7;
-    filter: blur(150px);
-    opacity: .25;
-    border-radius: 50%;
-    z-index: -1;
-    animation: float 7s infinite alternate;
-}
-
-.glow.one { top: 5%; left: 5%; }
-.glow.two { bottom: 5%; right: 5%; }
-
-@keyframes float {
-    from { transform: translateY(0); }
-    to { transform: translateY(50px); }
 }
 
 .container {
     width: 100%;
-    max-width: 460px;
-    text-align: center;
-    animation: appear 1s ease;
-}
-
-@keyframes appear {
-    from { opacity: 0; transform: translateY(25px); }
-    to { opacity: 1; transform: translateY(0); }
+    max-width: 440px;
+    padding: 35px 28px;
+    background: rgba(255,255,255,0.08);
+    border: 1px solid rgba(255,255,255,0.18);
+    border-radius: 25px;
+    backdrop-filter: blur(15px);
+    box-shadow: 0 20px 60px rgba(0,0,0,0.4);
 }
 
 .logo {
-    font-size: 35px;
-    font-weight: 900;
-    letter-spacing: 3px;
-    background: linear-gradient(90deg, #fff, #d8a7ff, #a855f7);
-    -webkit-background-clip: text;
-    color: transparent;
-    margin-bottom: 9px;
-}
-
-.tagline {
-    color: #c9b4df;
-    font-size: 13px;
+    text-align: center;
+    font-size: 30px;
+    font-weight: bold;
     letter-spacing: 2px;
-    margin-bottom: 30px;
-}
-
-.card {
-    padding: 32px 25px;
-    border: 1px solid rgba(255,255,255,.15);
-    border-radius: 25px;
-    background: rgba(255,255,255,.07);
-    backdrop-filter: blur(20px);
-    box-shadow: 0 20px 70px rgba(0,0,0,.4);
-}
-
-h2 {
-    font-size: 25px;
     margin-bottom: 10px;
 }
 
-.subtitle {
-    color: #c6b6d7;
-    font-size: 14px;
-    margin-bottom: 25px;
-    line-height: 1.6;
+.logo span {
+    color: #d6a6ff;
+}
+
+.tagline {
+    text-align: center;
+    color: #d7d4e7;
+    font-size: 13px;
+    margin-bottom: 30px;
 }
 
 .tabs {
     display: flex;
+    gap: 8px;
+    background: rgba(0,0,0,0.25);
     padding: 5px;
-    background: rgba(0,0,0,.3);
     border-radius: 12px;
-    margin-bottom: 24px;
+    margin-bottom: 25px;
 }
 
 .tabs button {
-    flex: 1;
-    border: none;
+    width: 50%;
     padding: 13px;
+    border: none;
     border-radius: 9px;
     background: transparent;
-    color: #cbb9df;
-    font-size: 14px;
+    color: white;
     font-weight: bold;
     cursor: pointer;
 }
 
 .tabs button.active {
-    background: linear-gradient(120deg, #923cf0, #6522b8);
-    color: white;
-    box-shadow: 0 5px 20px #752cc755;
+    background: #b77cff;
+    color: #17112a;
 }
 
-.field {
-    text-align: left;
+h2 {
+    text-align: center;
+    margin-bottom: 22px;
+}
+
+.input-group {
     margin-bottom: 17px;
 }
 
-label {
+.input-group label {
     display: block;
     font-size: 13px;
-    margin-bottom: 9px;
-    color: #e4d7f1;
+    margin-bottom: 8px;
+    color: #e3d8f5;
 }
 
-input {
+.input-group input {
+    width: 100%;
+    padding: 14px;
+    border: 1px solid rgba(255,255,255,0.2);
+    border-radius: 10px;
+    background: rgba(255,255,255,0.08);
+    color: white;
+    outline: none;
+    font-size: 15px;
+}
+
+.input-group input:focus {
+    border-color: #c18bff;
+}
+
+.input-group input::placeholder {
+    color: #b9afc9;
+}
+
+.main-btn {
     width: 100%;
     padding: 15px;
-    border: 1px solid rgba(255,255,255,.15);
+    margin-top: 8px;
+    border: none;
     border-radius: 11px;
-    background: rgba(0,0,0,.25);
-    color: white;
-    font-size: 14px;
-    outline: none;
-    transition: .3s;
-}
-
-input:focus {
-    border-color: #bb75ff;
-    box-shadow: 0 0 15px #a855f755;
-}
-
-input::placeholder {
-    color: #9485a4;
-}
-
-.password-box {
-    position: relative;
-}
-
-.password-box input {
-    padding-right: 65px;
-}
-
-.show-password {
-    position: absolute;
-    right: 12px;
-    top: 50%;
-    transform: translateY(-50%);
-    color: #d5b5f5;
-    background: none;
-    border: none;
-    cursor: pointer;
-    font-size: 12px;
-}
-
-.submit {
-    width: 100%;
-    padding: 16px;
-    margin-top: 10px;
-    border: none;
-    border-radius: 12px;
-    background: linear-gradient(110deg, #a855f7, #7025bd);
-    color: white;
-    font-size: 15px;
+    background: linear-gradient(90deg, #a855f7, #d8a4ff);
+    color: #180d27;
+    font-size: 16px;
     font-weight: bold;
     cursor: pointer;
-    box-shadow: 0 8px 25px #8b35d855;
-    transition: .3s;
 }
 
-.submit:hover {
-    transform: translateY(-3px);
-    box-shadow: 0 12px 30px #8b35d877;
-}
-
-.submit:disabled {
-    opacity: .6;
+.main-btn:disabled {
+    opacity: 0.6;
     cursor: wait;
-    transform: none;
 }
 
 .message {
-    display: none;
-    margin-top: 18px;
-    padding: 13px;
-    border-radius: 10px;
+    margin-top: 17px;
+    text-align: center;
     font-size: 13px;
-    line-height: 1.5;
+    line-height: 1.6;
     overflow-wrap: anywhere;
 }
 
-.success {
-    display: block;
-    background: #17452e;
-    color: #a8f5c7;
-}
-
-.error {
-    display: block;
-    background: #511d2a;
-    color: #ffb7c5;
-}
-
 .footer {
-    color: #a99bb9;
-    font-size: 12px;
-    margin-top: 24px;
-    line-height: 1.8;
+    text-align: center;
+    color: #aaa0bd;
+    font-size: 11px;
+    margin-top: 25px;
 }
 
-.footer strong {
-    color: #d8a7ff;
+.hidden {
+    display: none;
 }
 
-@media(max-width: 420px) {
-    .logo { font-size: 29px; }
-    .card { padding: 26px 18px; }
+@media(max-width: 480px) {
+    body {
+        padding: 15px;
+    }
+
+    .container {
+        padding: 30px 20px;
+    }
+
+    .logo {
+        font-size: 26px;
+    }
 }
 </style>
 </head>
 
 <body>
 
-<div class="glow one"></div>
-<div class="glow two"></div>
+<div class="container">
 
-<main class="container">
+    <div class="logo">TAHEERAH <span>ONE</span></div>
 
-    <div class="logo">TAHEERAH ONE</div>
+    <p class="tagline">
+        Create once. Connect everywhere.
+    </p>
 
-    <div class="tagline">
-        CREATE ONCE. CONNECT EVERYWHERE.
+    <div class="tabs">
+        <button id="signupTab" class="active" onclick="showSignup()">
+            Sign Up
+        </button>
+
+        <button id="loginTab" onclick="showLogin()">
+            Login
+        </button>
     </div>
 
-    <section class="card">
+    <form id="signupForm">
+        <h2>Create Your Account</h2>
 
-        <h2 id="heading">Create Your Account</h2>
-
-        <p class="subtitle" id="subtitle">
-            Your world. Your creativity. Your connections.
-        </p>
-
-        <div class="tabs">
-            <button class="active" id="signupTab"
-                onclick="switchMode('signup')">
-                Sign Up
-            </button>
-
-            <button id="loginTab"
-                onclick="switchMode('login')">
-                Log In
-            </button>
+        <div class="input-group">
+            <label>Full Name</label>
+            <input id="fullName" type="text"
+            placeholder="Enter your full name" required>
         </div>
 
-        <form id="authForm">
+        <div class="input-group">
+            <label>Email Address</label>
+            <input id="signupEmail" type="email"
+            placeholder="Enter your email" required>
+        </div>
 
-            <div class="field" id="nameField">
-                <label>Full Name</label>
-                <input
-                    type="text"
-                    id="fullName"
-                    placeholder="Enter your full name"
-                    autocomplete="name">
-            </div>
+        <div class="input-group">
+            <label>Password</label>
+            <input id="signupPassword" type="password"
+            placeholder="Create a password" minlength="6" required>
+        </div>
 
-            <div class="field">
-                <label>Email Address</label>
-                <input
-                    type="email"
-                    id="email"
-                    placeholder="Enter your email"
-                    required
-                    autocomplete="email">
-            </div>
+        <button class="main-btn" id="signupButton" type="submit">
+            Create Account
+        </button>
+    </form>
 
-            <div class="field">
-                <label>Password</label>
+    <form id="loginForm" class="hidden">
+        <h2>Welcome Back</h2>
 
-                <div class="password-box">
-                    <input
-                        type="password"
-                        id="password"
-                        placeholder="Create a password"
-                        required
-                        minlength="6"
-                        autocomplete="new-password">
+        <div class="input-group">
+            <label>Email Address</label>
+            <input id="loginEmail" type="email"
+            placeholder="Enter your email" required>
+        </div>
 
-                    <button type="button"
-                        class="show-password"
-                        onclick="togglePassword()">
-                        Show
-                    </button>
-                </div>
-            </div>
+        <div class="input-group">
+            <label>Password</label>
+            <input id="loginPassword" type="password"
+            placeholder="Enter your password" required>
+        </div>
 
-            <button class="submit" id="submitButton" type="submit">
-                Create Account
-            </button>
+        <button class="main-btn" id="loginButton" type="submit">
+            Login to TAHEERAH ONE
+        </button>
+    </form>
 
-            <div id="message" class="message"></div>
-
-        </form>
-
-    </section>
+    <div id="message" class="message"></div>
 
     <div class="footer">
-        A new world of possibilities.<br>
-        Powered by <strong>TAHEERAH TECHNOLOGY</strong><br>
         © 2026 TAHEERAH ONE. All rights reserved.
     </div>
 
-</main>
+</div>
 
 <script>
 const SUPABASE_URL =
@@ -399,319 +252,106 @@ const SUPABASE_URL =
 const SUPABASE_PUBLISHABLE_KEY =
 "PASTE_YOUR_SUPABASE_PUBLISHABLE_KEY_HERE";
 
-const supabaseClient = window.supabase.createClient(
+const supabaseClient =
+window.supabase.createClient(
     SUPABASE_URL,
     SUPABASE_PUBLISHABLE_KEY
 );
 
-let currentMode = "signup";
+const signupForm = document.getElementById("signupForm");
+const loginForm = document.getElementById("loginForm");
+const message = document.getElementById("message");
 
-function switchMode(mode) {
-    currentMode = mode;
+function showSignup() {
+    signupForm.classList.remove("hidden");
+    loginForm.classList.add("hidden");
 
-    const signup = mode === "signup";
+    document.getElementById("signupTab").classList.add("active");
+    document.getElementById("loginTab").classList.remove("active");
 
-    document.getElementById("nameField").style.display =
-        signup ? "block" : "none";
-
-    document.getElementById("heading").textContent =
-        signup ? "Create Your Account" : "Welcome Back";
-
-    document.getElementById("subtitle").textContent =
-        signup
-        ? "Your world. Your creativity. Your connections."
-        : "Log in and continue your journey.";
-
-    document.getElementById("submitButton").textContent =
-        signup ? "Create Account" : "Log In";
-
-    document.getElementById("signupTab").classList.toggle(
-        "active", signup
-    );
-
-    document.getElementById("loginTab").classList.toggle(
-        "active", !signup
-    );
-
-    document.getElementById("password").autocomplete =
-        signup ? "new-password" : "current-password";
-
-    showMessage("", "");
+    message.textContent = "";
 }
 
-function togglePassword() {
-    const input = document.getElementById("password");
-    const button = document.querySelector(".show-password");
+function showLogin() {
+    loginForm.classList.remove("hidden");
+    signupForm.classList.add("hidden");
 
-    if (input.type === "password") {
-        input.type = "text";
-        button.textContent = "Hide";
-    } else {
-        input.type = "password";
-        button.textContent = "Show";
-    }
+    document.getElementById("loginTab").classList.add("active");
+    document.getElementById("signupTab").classList.remove("active");
+
+    message.textContent = "";
 }
 
-function showMessage(text, type) {
-    const box = document.getElementById("message");
-
-    box.textContent = text;
-    box.className = "message";
-
-    if (type) {
-        box.classList.add(type);
-    }
-}
-
-document.getElementById("authForm").addEventListener(
-    "submit", async function(event) {
-
+signupForm.addEventListener("submit", async function(event) {
     event.preventDefault();
 
-    const button = document.getElementById("submitButton");
-    const fullName = document.getElementById("fullName").value.trim();
-    const email = document.getElementById("email").value.trim();
-    const password = document.getElementById("password").value;
-
-    if (
-        SUPABASE_PUBLISHABLE_KEY ===
-        "PASTE_YOUR_SUPABASE_PUBLISHABLE_KEY_HERE"
-    ) {
-        showMessage(
-            "Please add your Supabase publishable key first.",
-            "error"
-        );
-        return;
-    }
-
+    const button = document.getElementById("signupButton");
     button.disabled = true;
-    button.textContent = "Please wait...";
-    showMessage("", "");
+    button.textContent = "Creating account...";
+
+    message.textContent = "";
 
     try {
-        if (currentMode === "signup") {
+        const fullName = document.getElementById("fullName").value;
+        const email = document.getElementById("signupEmail").value;
+        const password = document.getElementById("signupPassword").value;
 
-            if (!fullName) {
-                throw new Error("Please enter your full name.");
+        const { data, error } = await supabaseClient.auth.signUp({
+            email: email,
+            password: password,
+            options: {
+                data: {
+                    full_name: fullName
+                },
+                emailRedirectTo:
+                "https://shehufatima3131.github.io/Taheerah-Technology-/auth.html"
             }
+        });
 
-            const { data, error } =
-                await supabaseClient.auth.signUp({
+        if (error) throw error;
 
-                email: email,
-                password: password,
-
-                options: {
-                    data: {
-                        full_name: fullName
-                    },
-
-                    emailRedirectTo:
-                    "https://shehufatima3131.github.io/Taheerah-Technology-/auth.html"
-                }
-            });
-
-            if (error) throw error;
-
-            showMessage(
-                "Your signup request was received! Please check your email for a confirmation link before logging in.",
-                "success"
-            );
-
-        } else {
-
-            const { data, error } =
-                await supabaseClient.auth.signInWithPassword({
-                    email: email,
-                    password: password
-                });
-
-            if (error) throw error;
-
-            showMessage(
-                "Welcome back! You have successfully logged in to TAHEERAH ONE.",
-                "success"
-            );
-        }
+        message.textContent =
+        "Account request successful! Please check your email for confirmation.";
 
     } catch (error) {
-
-        showMessage(error.message, "error");
-
-    } finally {
-
-        button.disabled = false;
-
-        button.textContent =
-            currentMode === "signup"
-            ? "Create Account"
-            : "Log In";
+        message.textContent = error.message;
     }
+
+    button.disabled = false;
+    button.textContent = "Create Account";
+});
+
+loginForm.addEventListener("submit", async function(event) {
+    event.preventDefault();
+
+    const button = document.getElementById("loginButton");
+    button.disabled = true;
+    button.textContent = "Logging in...";
+
+    message.textContent = "";
+
+    try {
+        const email = document.getElementById("loginEmail").value;
+        const password = document.getElementById("loginPassword").value;
+
+        const { data, error } =
+        await supabaseClient.auth.signInWithPassword({
+            email: email,
+            password: password
+        });
+
+        if (error) throw error;
+
+        message.textContent = "Welcome to TAHEERAH ONE! Login successful.";
+
+    } catch (error) {
+        message.textContent = error.message;
+    }
+
+    button.disabled = false;
+    button.textContent = "Login to TAHEERAH ONE";
 });
 </script>
 
-</body>
-</html>: 22px;
-      font-size: 23px;
-    }
-
-    .tabs {
-      display: flex;
-      background: rgba(0,0,0,0.2);
-      border-radius: 12px;
-      padding: 5px;
-      margin-bottom: 24px;
-    }
-
-    .tabs button {
-      width: 50%;
-      padding: 12px;
-      border: none;
-      border-radius: 9px;
-      background: transparent;
-      color: white;
-      cursor: pointer;
-      font-weight: bold;
-    }
-
-    .tabs button.active {
-      background: #b77cff;
-      color: #17112a;
-    }
-
-    .field {
-      margin-bottom: 17px;
-    }
-
-    label {
-      display: block;
-      margin-bottom: 8px;
-      font-size: 13px;
-      color: #e7def7;
-    }
-
-    input {
-      width: 100%;
-      padding: 14px;
-      border: 1px solid rgba(255,255,255,0.2);
-      border-radius: 10px;
-      background: rgba(255,255,255,0.09);
-      color: white;
-      outline: none;
-      font-size: 14px;
-    }
-
-    input::placeholder {
-      color: #bcb6ca;
-    }
-
-    .submit {
-      width: 100%;
-      padding: 15px;
-      border: none;
-      border-radius: 11px;
-      background: linear-gradient(90deg, #c18aff, #8c66ff);
-      color: #17112a;
-      font-size: 15px;
-      font-weight: bold;
-      cursor: pointer;
-      margin-top: 8px;
-    }
-
-    .switch-text {
-      text-align: center;
-      color: #d7d4e7;
-      font-size: 13px;
-      margin-top: 23px;
-    }
-
-    .switch-text button {
-      background: none;
-      border: none;
-      color: #d6a6ff;
-      font-weight: bold;
-      cursor: pointer;
-    }
-
-    .footer {
-      text-align: center;
-      font-size: 11px;
-      color: #aaa3bd;
-      margin-top: 25px;
-    }
-  </style>
-</head>
-
-<body>
-  <div class="container">
-
-    <div class="logo">TAHEERAH <span>ONE</span></div>
-    <p class="tagline">Create once. Connect everywhere. 🌍</p>
-
-    <h2 id="heading">Create your account</h2>
-
-    <div class="tabs">
-      <button id="signupTab" class="active" onclick="showSignup()">Sign Up</button>
-      <button id="loginTab" onclick="showLogin()">Login</button>
-    </div>
-
-    <form id="authForm">
-      <div class="field" id="nameField">
-        <label>Full Name</label>
-        <input type="text" id="fullName" placeholder="Enter your full name">
-      </div>
-
-      <div class="field">
-        <label>Email Address</label>
-        <input type="email" id="email" placeholder="Enter your email" required>
-      </div>
-
-      <div class="field">
-        <label>Password</label>
-        <input type="password" id="password" placeholder="Create a password" required minlength="6">
-      </div>
-
-      <button class="submit" type="submit" id="submitBtn">Create Account</button>
-    </form>
-
-    <p class="switch-text" id="switchText">
-      Already have an account?
-      <button onclick="showLogin()">Login</button>
-    </p>
-
-    <p class="footer">© 2026 TAHEERAH ONE. All rights reserved.</p>
-
-  </div>
-
-  <script>
-    let currentMode = "signup";
-
-    function showSignup() {
-      currentMode = "signup";
-      document.getElementById("heading").textContent = "Create your account";
-      document.getElementById("nameField").style.display = "block";
-      document.getElementById("submitBtn").textContent = "Create Account";
-      document.getElementById("signupTab").classList.add("active");
-      document.getElementById("loginTab").classList.remove("active");
-      document.getElementById("switchText").innerHTML =
-        'Already have an account? <button type="button" onclick="showLogin()">Login</button>';
-    }
-
-    function showLogin() {
-      currentMode = "login";
-      document.getElementById("heading").textContent = "Welcome back";
-      document.getElementById("nameField").style.display = "none";
-      document.getElementById("submitBtn").textContent = "Login";
-      document.getElementById("signupTab").classList.remove("active");
-      document.getElementById("loginTab").classList.add("active");
-      document.getElementById("switchText").innerHTML =
-        'New to TAHEERAH ONE? <button type="button" onclick="showSignup()">Sign Up</button>';
-    }
-
-    document.getElementById("authForm").addEventListener("submit", function(event) {
-      event.preventDefault();
-      alert("TAHEERAH ONE: We will connect your account to Supabase in our next step!");
-    });
-  </script>
 </body>
 </html>
