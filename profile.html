@@ -389,3 +389,35 @@ document.getElementById("profileForm")
   const button = document.getElementById("saveButton");
 
   button.disabled = true
+  
+button.textContent = "Saving...";
+
+const { error } = await supabaseClient
+  .from("profiles")
+  .upsert({
+    id: currentUser.id,
+    full_name: document.getElementById("fullName").value.trim(),
+    username: document.getElementById("username").value.trim(),
+    avatar_url: document.getElementById("avatarUrl").value.trim(),
+    bio: document.getElementById("bio").value.trim()
+  }, {
+    onConflict: "id"
+  });
+
+button.disabled = false;
+button.textContent = "Save Profile";
+
+if (error) {
+  message.textContent = "Save error: " + error.message;
+  return;
+}
+
+message.textContent = "Your profile has been saved successfully! 🎉💜";
+
+});
+
+loadProfile();
+
+</script>
+</body>
+</html>
