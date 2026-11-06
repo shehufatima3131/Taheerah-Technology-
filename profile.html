@@ -417,7 +417,29 @@ message.textContent = "Your profile has been saved successfully! 🎉💜";
 });
 
 loadProfile();
+// Logout function
 
+document.getElementById("logout")
+.addEventListener("click", async function() {
+
+  const button = this;
+
+  button.disabled = true;
+  button.textContent = "Logging out...";
+
+  const { error } = await supabaseClient.auth.signOut();
+
+  if (error) {
+    message.textContent = "Logout error: " + error.message;
+    button.disabled = false;
+    button.textContent = "Logout";
+    return;
+  }
+
+  window.location.href = "auth.html";
+
+});
+  
 </script>
 </body>
 </html>
