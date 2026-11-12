@@ -447,7 +447,146 @@ document.getElementById("logout").addEventListener("click", async () => {
   await supabaseClient.auth.signOut();
   window.location.href = "auth.html";
 });
+// TAHEERAH ONE STORIES
 
+const storyFile = document.getElementById("storyFile");
+const uploadStoryButton = document.getElementById("uploadStory");
+const storiesContainer = document.getElementById("storiesContainer");
+const storyMessage = document.getElementById("storyMessage");
+
+// Load active stories
+
+async function loadStories() {
+
+  const { data, error } = await supabaseClient
+    .from("stories")
+    .select("*")
+    .gt("expires_at", new Date().toISOString())
+    .order("created_at", { ascending: false });
+
+  if (error) {
+    storyMessage.textContent = error.message;
+    return;
+  }
+
+  const addStoryItem = storiesContainer.querySelector(".story-item");
+
+storiesContainer.innerHTML = "";
+
+if (addStoryItem) {
+  storiesContainer.appendChild(addStoryItem);
+}
+
+  data.forEach(function(story) {
+
+    const item = document.createElement("div");
+    item.className = "story-item";
+
+    if (story.media_type.startsWith("video/")) {
+
+      item.innerHTML = `
+        <video src="${story.media_url}"
+        controls width="100" height="100"></video>
+      `;
+
+    } else {
+
+      item.innerHTML = `
+        <img src="${story.media_url}"
+        width="100" height="100"
+        style="object-fit:cover;border-radius:50%;">
+      `;
+
+    }
+
+    storiesContainer.appendChild(item);
+
+  });
+
+}
+
+// Upload story
+
+uploadStoryButton.addEventListener("click", async function() {
+
+  const file = storyFile.files[0];
+
+  if (!file) {
+    storyMessage.textContent = "Please choose a photo or video.";
+    return;
+  }
+
+  if (!file.type.startsWith("image/") &&
+      !file.type.startsWith("video/")) {
+    storyMessage.textContent = "Choose an image or video.";
+    return;
+  }
+
+  if (file.size > 50 * 1024 * 1024) {
+    storyMessage.textContent = "File must be below 50 MB.";
+    return;
+  }
+
+  uploadStoryButton.disabled = true;
+  uploadStoryButton.textContent = "Uploading...";
+
+  try {
+
+    const { data: userData, error: userError } =
+      await supabaseClient.auth.getUser();
+
+    if (userError || !userData.user) {
+      throw new Error("Please log in first.");
+    }
+
+    const user = userData.user;
+
+    const filePath = user.id + "/" + Date.now() + "_" + file.name;
+
+    const { error: uploadError } = await supabaseClient
+      .storage
+      .from("story-media")
+      .upload(filePath, file);
+
+    if (uploadError) throw uploadError;
+
+    const { data: urlData } = supabaseClient
+      .storage
+      .from("story-media")
+      .getPublicUrl(filePath);
+
+    const { error: insertError } = await supabaseClient
+      .from("stories")
+      .insert({
+        user_id: user.id,
+        media_url: urlData.publicUrl,
+        media_type: file.type
+      });
+
+    if (insertError) throw insertError;
+
+    storyMessage.textContent = "Your Story has been shared! 🎉💜";
+
+    storyFile.value = "";
+
+    await loadStories();
+
+  } catch (error) {
+
+    storyMessage.textContent = "Error: " + error.message;
+
+  } finally {
+
+    uploadStoryButton.disabled = false;
+    uploadStoryButton.textContent = "Share Story";
+
+  }
+
+});
+
+loadStories();
+
+// END TAHEERAH ONE STORIES
 startApp();
 </script>
 
