@@ -218,24 +218,52 @@ async function loadPosts() {
     const author = document.createElement("small");
     author.textContent = "TAHEERAH ONE Member";
 
-    const caption = document.createElement("p");
-    caption.textContent = post.caption || "";
+    card.appendChild(author);
+
+    if (post.caption) {
+      const caption = document.createElement("p");
+      caption.textContent = post.caption;
+      card.appendChild(caption);
+    }
+
+    if (post.media_url) {
+      let media;
+
+      const isVideo = post.media_type === "video";
+
+      if (isVideo) {
+        media = document.createElement("video");
+        media.controls = true;
+        media.playsInline = true;
+      } else {
+        media = document.createElement("img");
+        media.alt = "TAHEERAH ONE post";
+      }
+
+      media.src = post.media_url;
+      media.style.maxWidth = "100%";
+      media.style.borderRadius = "12px";
+
+      card.appendChild(media);
+    }
 
     const date = document.createElement("small");
     date.textContent = new Date(post.created_at).toLocaleString();
 
-    card.append(author, caption, date);
+    card.appendChild(date);
     feed.appendChild(card);
   });
 }
+
 
 document.getElementById("postForm").addEventListener("submit", async (e) => {
   e.preventDefault();
 
   const caption = document.getElementById("caption").value.trim();
+  const mediaFile = document.getElementById("postMedia").files[0];
 
-  if (!caption) {
-    message.textContent = "Please write something first.";
+  if (!caption && !mediaFile) {
+    message.textContent = "Please write text or select a photo/video.";
     return;
   }
 
@@ -243,26 +271,73 @@ document.getElementById("postForm").addEventListener("submit", async (e) => {
   button.disabled = true;
   button.textContent = "Publishing...";
 
-  const { error } = await supabaseClient
-    .from("posts")
-    .insert({
-      user_id: currentUser.id,
-      caption: caption
-    });
+  try {
+    let mediaURL = null;
+    let mediaType = null;
 
-  button.disabled = false;
-  button.textContent = "Publish Post";
+    if (mediaFile) {
+      if (
+        !mediaFile.type.startsWith("image/") &&
+        !mediaFile.type.startsWith("video/")
+      ) {
+        throw new Error("Please select an image or video.");
+      }
 
-  if (error) {
-    message.textContent = error.message;
-    return;
+      if (mediaFile.size > 50 * 1024 * 1024) {
+        throw new Error("File must be smaller than 50 MB.");
+      }
+
+      const safeName = mediaFile.name.replace(/[^a-zA-Z0-9._-]/g, "_");
+
+      const filePath =
+        currentUser.id + "/" + Date.now() + "-" + safeName;
+
+      const { error: uploadError } = await supabaseClient
+        .storage
+        .from("post-media")
+        .upload(filePath, mediaFile);
+
+      if (uploadError) throw uploadError;
+
+      const { data: urlData } = supabaseClient
+        .storage
+        .from("post-media")
+        .getPublicUrl(filePath);
+
+      mediaURL = urlData.publicUrl;
+
+      mediaType = mediaFile.type.startsWith("video/")
+        ? "video"
+        : "image";
+    }
+
+    const { error } = await supabaseClient
+      .from("posts")
+      .insert({
+        user_id: currentUser.id,
+        caption: caption,
+        media_url: mediaURL,
+        media_type: mediaType
+      });
+
+    if (error) throw error;
+
+    document.getElementById("caption").value = "";
+    document.getElementById("postMedia").value = "";
+
+    message.textContent = "Your post has been published! 🎉💜";
+
+    await loadPosts();
+
+  } catch (error) {
+    message.textContent = "Error: " + error.message;
+
+  } finally {
+    button.disabled = false;
+    button.textContent = "Publish Post";
   }
-
-  document.getElementById("caption").value = "";
-  message.textContent = "Your post has been published! 🎉";
-
-  loadPosts();
 });
+
 
 document.getElementById("logout").addEventListener("click", async () => {
   await supabaseClient.auth.signOut();
