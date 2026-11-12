@@ -531,7 +531,7 @@ uploadStoryButton.addEventListener("click", async function() {
   uploadStoryButton.textContent = "Uploading...";
 
   try {
-
+    storyMessage.textContent = "Checking your account...";
     const { data: userData, error: userError } =
       await supabaseClient.auth.getUser();
 
@@ -547,13 +547,16 @@ uploadStoryButton.addEventListener("click", async function() {
       .storage
       .from("story-media")
       .upload(filePath, file);
-
-    if (uploadError) throw uploadError;
+    
+  if (uploadError) throw uploadError;
+storyMessage.textContent = "Photo uploaded. Saving story...";
 
     const { data: urlData } = supabaseClient
       .storage
       .from("story-media")
       .getPublicUrl(filePath);
+    
+    storyMessage.textContent = "Saving story to database...";
 
     const { error: insertError } = await supabaseClient
       .from("stories")
