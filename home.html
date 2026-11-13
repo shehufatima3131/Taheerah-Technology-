@@ -489,12 +489,75 @@ document.getElementById("logout").addEventListener("click", async () => {
 });
 // TAHEERAH ONE STORIES
 
+  let allStories = [];
+let currentStoryIndex = 0;
+let storyTimer = null;
+
 const storyFile = document.getElementById("storyFile");
 const uploadStoryButton = document.getElementById("uploadStory");
 const storiesContainer = document.getElementById("storiesContainer");
 const storyMessage = document.getElementById("storyMessage");
 
 // Load active stories
+
+  function showStory(index) {
+
+  if (index >= allStories.length) {
+    document.getElementById("storyViewer").style.display = "none";
+    return;
+  }
+
+  clearTimeout(storyTimer);
+
+  currentStoryIndex = index;
+
+  const story = allStories[index];
+
+  const viewer = document.getElementById("storyViewer");
+  const fullImage = document.getElementById("fullStoryImage");
+  const fullVideo = document.getElementById("fullStoryVideo");
+  const progressBar = document.getElementById("storyProgressBar");
+
+  viewer.style.display = "flex";
+
+  fullVideo.pause();
+  fullVideo.src = "";
+  fullImage.src = "";
+
+  fullImage.style.display = "none";
+  fullVideo.style.display = "none";
+
+  progressBar.style.transition = "none";
+  progressBar.style.width = "0%";
+
+  if (story.media_type.startsWith("video/")) {
+
+    fullVideo.src = story.media_url;
+    fullVideo.style.display = "block";
+
+    fullVideo.onended = function() {
+      showStory(index + 1);
+    };
+
+    fullVideo.play();
+
+  } else {
+
+    fullImage.src = story.media_url;
+    fullImage.style.display = "block";
+
+    setTimeout(() => {
+      progressBar.style.transition = "width 5s linear";
+      progressBar.style.width = "100%";
+    }, 50);
+
+    storyTimer = setTimeout(() => {
+      showStory(index + 1);
+    }, 5000);
+
+  }
+
+}
 
 async function loadStories() {
 
@@ -509,6 +572,8 @@ async function loadStories() {
     return;
   }
 
+  allStories = data || [];
+  
   const addStoryItem = storiesContainer.querySelector(".story-item");
 
 storiesContainer.innerHTML = "";
@@ -540,28 +605,14 @@ if (addStoryItem) {
     }
 
 
-item.addEventListener("click", function() {
 
-  const viewer = document.getElementById("storyViewer");
-  const fullImage = document.getElementById("fullStoryImage");
-  const fullVideo = document.getElementById("fullStoryVideo");
+  item.addEventListener("click", function() {
 
-  viewer.style.display = "flex";
+  currentStoryIndex = allStories.indexOf(story);
 
-  fullImage.style.display = "none";
-  fullVideo.style.display = "none";
-
-  if (story.media_type.startsWith("video/")) {
-    fullVideo.src = story.media_url;
-    fullVideo.style.display = "block";
-    fullVideo.play();
-  } else {
-    fullImage.src = story.media_url;
-    fullImage.style.display = "block";
-  }
+  showStory(currentStoryIndex);
 
 });
-  
 
     storiesContainer.appendChild(item);
 
@@ -662,11 +713,13 @@ document.getElementById("closeStory").addEventListener("click", function() {
   const viewer = document.getElementById("storyViewer");
   const fullImage = document.getElementById("fullStoryImage");
   const fullVideo = document.getElementById("fullStoryVideo");
+  clearTimeout(storyTimer);
 
   fullVideo.pause();
+  fullVideo.onended = null;
   fullVideo.src = "";
   fullImage.src = "";
-
+END TAHEERAH ONE STORIES.
   viewer.style.display = "none";
 
 });
