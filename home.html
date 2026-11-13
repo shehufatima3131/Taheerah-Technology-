@@ -539,15 +539,6 @@ if (addStoryItem) {
 
     }
 
-    } else {
-
-      item.innerHTML = `
-        <img src="${story.media_url}"
-        width="100" height="100"
-        style="object-fit:cover;border-radius:50%;">
-      `;
-
-    }
 
 item.addEventListener("click", function() {
 
@@ -641,9 +632,9 @@ storyMessage.textContent = "Photo uploaded. Saving story...";
 
     if (insertError) throw insertError;
     
-    storyMessage.textContent = "Database saved successfully!";
     
     
+    storyMessage.textContent = "Your Story has been shared! 🎉💜";
 
     storyFile.value = "";
 
