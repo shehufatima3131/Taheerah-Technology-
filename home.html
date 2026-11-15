@@ -156,7 +156,7 @@ button:disabled {
 
   const { data, error } = await supabaseClient
     .from("posts")
-    .select("*")
+    .select("*, profiles(full_name, username)")
     .order("created_at", { ascending: false });
 
   if (error) {
@@ -169,6 +169,20 @@ button:disabled {
   data.forEach(function(post) {
     const card = document.createElement("div");
     card.className = "post";
+    
+const author = document.createElement("div");
+
+const profile = Array.isArray(post.profiles)
+  ? post.profiles[0]
+  : post.profiles;
+
+author.innerHTML = `
+  <strong>${profile?.full_name || "Member"}</strong><br>
+  <span>@${profile?.username || "user"}</span>
+`;
+
+card.appendChild(author);
+    
 
     const caption = document.createElement("p");
     caption.textContent = post.caption || "";
