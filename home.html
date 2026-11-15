@@ -144,6 +144,51 @@ button:disabled {
       SUPABASE_PUBLISHABLE_KEY
     );
           let currentUser = null;
+
+    async function loadPosts() {
+  const feed = document.getElementById("feed");
+
+  feed.innerHTML = "Loading posts...";
+
+  const { data, error } = await supabaseClient
+    .from("posts")
+    .select("*")
+    .order("created_at", { ascending: false });
+
+  if (error) {
+    feed.textContent = "Error loading posts: " + error.message;
+    return;
+  }
+
+  feed.innerHTML = "";
+
+  data.forEach(function(post) {
+    const card = document.createElement("div");
+    card.className = "post";
+
+    const caption = document.createElement("p");
+    caption.textContent = post.caption || "";
+    card.appendChild(caption);
+
+    if (post.media_url) {
+      let media;
+
+      if (post.media_type === "video") {
+        media = document.createElement("video");
+        media.controls = true;
+        media.playsInline = true;
+      } else {
+        media = document.createElement("img");
+        media.alt = "TAHEERAH ONE post";
+      }
+
+      media.src = post.media_url;
+      card.appendChild(media);
+    }
+
+    feed.appendChild(card);
+  });
+}
     async function startApp() {
       const status = document.getElementById("status");
 
@@ -165,8 +210,11 @@ button:disabled {
           user.user_metadata.full_name || "Member";
 
         status.textContent =
+      
           "Welcome, " + name + "! Your account is connected. 💜";
-
+        
+        await loadPosts();
+  
       } catch (error) {
         status.textContent =
           "Connection error: " + error.message;
@@ -189,6 +237,50 @@ button:disabled {
   }
 
   message.textContent = "Publishing your post...";
+
+        try {
+    let mediaURL = null;
+    let mediaType = null;
+
+    if (mediaFile) {
+      const safeName = mediaFile.name.replace(/[^a-zA-Z0-9._-]/g, "_");
+      const filePath = currentUser.id + "/" + Date.now() + "-" + safeName;
+
+      const { error: uploadError } = await supabaseClient
+        .storage.from("post-media")
+        .upload(filePath, mediaFile);
+
+      if (uploadError) throw uploadError;
+
+      const { data: urlData } = supabaseClient
+        .storage.from("post-media")
+        .getPublicUrl(filePath);
+
+      mediaURL = urlData.publicUrl;
+      mediaType = mediaFile.type.startsWith("video/") ? "video" : "image";
+    }
+
+    const { error } = await supabaseClient
+      .from("posts")
+      .insert({
+        user_id: currentUser.id,
+        caption: caption,
+        media_url: mediaURL,
+        media_type: mediaType
+      });
+
+    if (error) throw error;
+
+    document.getElementById("caption").value = "";
+    document.getElementById("postMedia").value = "";
+
+    message.textContent = "Your post has been published! 🎉💜";
+
+          await loadPosts();
+
+  } catch (error) {
+    message.textContent = "Error: " + error.message;
+  }
 });
 
     startApp();
