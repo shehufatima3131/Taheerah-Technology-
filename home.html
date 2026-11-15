@@ -143,7 +143,7 @@ button:disabled {
       SUPABASE_URL,
       SUPABASE_PUBLISHABLE_KEY
     );
-
+          let currentUser = null;
     async function startApp() {
       const status = document.getElementById("status");
 
@@ -159,6 +159,7 @@ button:disabled {
         }
 
         const user = data.session.user;
+       currentUser = user; 
 
         const name =
           user.user_metadata.full_name || "Member";
@@ -171,6 +172,24 @@ button:disabled {
           "Connection error: " + error.message;
       }
     }
+
+    document.getElementById("postButton").addEventListener("click", async function() {
+  const caption = document.getElementById("caption").value.trim();
+  const mediaFile = document.getElementById("postMedia").files[0];
+  const message = document.getElementById("message");
+
+  if (!currentUser) {
+    message.textContent = "Please log in first.";
+    return;
+  }
+
+  if (!caption && !mediaFile) {
+    message.textContent = "Write something or choose a photo/video.";
+    return;
+  }
+
+  message.textContent = "Publishing your post...";
+});
 
     startApp();
   </script>
