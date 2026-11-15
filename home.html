@@ -45,6 +45,50 @@
       color: #c69aff;
       line-height: 1.6;
     }
+
+    textarea,
+input[type="file"] {
+  width: 100%;
+  margin-top: 10px;
+  color: white;
+}
+
+textarea {
+  background: #100d19;
+  color: white;
+  border: 1px solid #8c65bd;
+  border-radius: 12px;
+  resize: vertical;
+}
+
+button {
+  background: #a66bea;
+  color: white;
+  border: none;
+  padding: 13px 22px;
+  border-radius: 10px;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+button:disabled {
+  opacity: 0.5;
+}
+
+.post {
+  background: #100d19;
+  padding: 15px;
+  margin-top: 15px;
+  border-radius: 12px;
+  text-align: left;
+}
+
+.post img,
+.post video {
+  width: 100%;
+  border-radius: 12px;
+  margin-top: 10px;
+}
   </style>
 </head>
 
@@ -59,6 +103,34 @@
     <h2>Welcome to TAHEERAH ONE 🌍</h2>
     <p id="status">Connecting to your account...</p>
   </div>
+
+  <div class="container">
+  <h2>Create a Post ✨</h2>
+
+  <textarea
+    id="caption"
+    placeholder="What's on your mind?"
+    style="width:100%; min-height:100px; padding:12px;">
+  </textarea>
+
+  <br><br>
+
+  <input
+    type="file"
+    id="postMedia"
+    accept="image/*,video/*">
+
+  <br><br>
+
+  <button id="postButton">Publish Post</button>
+
+  <p id="message"></p>
+</div>
+
+<div class="container">
+  <h2>Explore Posts 🌍</h2>
+  <div id="feed"></div>
+</div>
 
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
