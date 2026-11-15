@@ -163,7 +163,19 @@ button:disabled {
     feed.textContent = "Error loading posts: " + error.message;
     return;
   }
+     const userIds = [...new Set(data.map(post => post.user_id).filter(Boolean))];
 
+const { data: profilesData } = await supabaseClient
+  .from("profiles")
+  .select("id, full_name, username")
+  .in("id", userIds);
+
+const profilesMap = {};
+
+(profilesData || []).forEach(profile => {
+  profilesMap[profile.id] = profile;
+}); 
+      
   feed.innerHTML = "";
 
   data.forEach(function(post) {
@@ -172,9 +184,7 @@ button:disabled {
     
 const author = document.createElement("div");
 
-const profile = Array.isArray(post.profiles)
-  ? post.profiles[0]
-  : post.profiles;
+const profile = profilesMap[post.user_id];
 
 author.innerHTML = `
   <strong>${profile?.full_name || "Member"}</strong><br>
