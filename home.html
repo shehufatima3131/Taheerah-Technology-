@@ -165,10 +165,15 @@ button:disabled {
   }
      const userIds = [...new Set(data.map(post => post.user_id).filter(Boolean))];
 
-const { data: profilesData } = await supabaseClient
+const { data: profilesData, error: profilesError } = await supabaseClient
   .from("profiles")
   .select("id, full_name, username")
   .in("id", userIds);
+
+if (profilesError) {
+  feed.textContent = "Error loading profiles: " + profilesError.message;
+  return;
+}
 
 const profilesMap = {};
 
