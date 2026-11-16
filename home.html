@@ -181,6 +181,15 @@ const profilesMap = {};
   profilesMap[profile.id] = profile;
 }); 
       
+      const { data: likesData, error: likesError } = await supabaseClient
+  .from("likes")
+  .select("post_id, user_id")
+  .in("post_id", data.map(post => post.id));
+
+if (likesError) {
+  feed.textContent = "Error loading likes: " + likesError.message;
+  return;
+}
   feed.innerHTML = "";
 
   data.forEach(function(post) {
@@ -218,6 +227,63 @@ card.appendChild(author);
       media.src = post.media_url;
       card.appendChild(media);
     }
+
+     const postLikes = likesData.filter(
+  like => like.post_id === post.id
+);
+
+let userLiked = postLikes.some(
+  like => like.user_id === currentUser.id
+);
+
+const likeButton = document.createElement("button");
+
+likeButton.textContent = userLiked
+  ? `❤️ Liked (${postLikes.length})`
+  : `🤍 Like (${postLikes.length})`;
+
+likeButton.addEventListener("click", async function() {
+
+  if (userLiked) {
+    const { error } = await supabaseClient
+      .from("likes")
+      .delete()
+      .eq("post_id", post.id)
+      .eq("user_id", currentUser.id);
+
+    if (error) {
+      alert(error.message);
+      return;
+    }
+
+    userLiked = false;
+
+  } else {
+    const { error } = await supabaseClient
+      .from("likes")
+      .insert({
+        post_id: post.id,
+        user_id: currentUser.id
+      });
+
+    if (error) {
+      alert(error.message);
+      return;
+    }
+
+    userLiked = true;
+  }
+
+  const count = postLikes.length + (userLiked ? 1 : -1);
+
+  likeButton.textContent = userLiked
+    ? `❤️ Liked (${count})`
+    : `🤍 Like (${count})`;
+
+  await loadPosts();
+});
+
+card.appendChild(likeButton);
 
     feed.appendChild(card);
   });
