@@ -172,9 +172,19 @@ if (commentsError) {
   feed.textContent = "Error loading comments: " + commentsError.message;
   return;
 }
+      const { data: followersData, error: followersError } = await supabaseClient
+  .from("followers")
+  .select("follower_id, following_id");
+
+if (followersError) {
+  feed.textContent = "Error loading followers: " + followersError.message;
+  return;
+}
      const userIds = [...new Set([
   ...data.map(post => post.user_id),
-  ...(commentsData || []).map(comment => comment.user_id)
+  ...(commentsData || []).map(comment => comment.user_id),
+  ...(followersData || []).map(f => f.follower_id),
+  ...(followersData || []).map(f => f.following_id)
 ].filter(Boolean))];
 
 const { data: profilesData, error: profilesError } = await supabaseClient
@@ -228,6 +238,62 @@ author.innerHTML = `
 
 card.appendChild(author);
     
+    const followButton = document.createElement("button");
+
+if (post.user_id !== currentUser.id) {
+  const isFollowing = (followersData || []).some(f =>
+    f.follower_id === currentUser.id &&
+    f.following_id === post.user_id
+  );
+
+  followButton.textContent = isFollowing ? "Following" : "Follow";
+
+  followButton.addEventListener("click", async function() {
+    if (isFollowing) {
+      const { error } = await supabaseClient
+        .from("followers")
+        .delete()
+        .eq("follower_id", currentUser.id)
+        .eq("following_id", post.user_id);
+
+      if (error) {
+        alert(error.message);
+        return;
+      }
+    } else {
+      const { error } = await supabaseClient
+        .from("followers")
+        .insert({
+          follower_id: currentUser.id,
+          following_id: post.user_id
+        });
+
+      if (error) {
+        alert(error.message);
+        return;
+      }
+    }
+
+    await loadPosts();
+  });
+
+  card.appendChild(followButton);
+}
+    const followersCount = (followersData || []).filter(f =>
+  f.following_id === post.user_id
+).length;
+
+const followingCount = (followersData || []).filter(f =>
+  f.follower_id === post.user_id
+).length;
+
+const followCounts = document.createElement("p");
+
+followCounts.textContent =
+  followersCount + " Followers · " +
+  followingCount + " Following";
+
+card.appendChild(followCounts);
 
     const caption = document.createElement("p");
     caption.textContent = post.caption || "";
