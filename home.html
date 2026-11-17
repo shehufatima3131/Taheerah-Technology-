@@ -189,7 +189,7 @@ if (followersError) {
 
 const { data: profilesData, error: profilesError } = await supabaseClient
   .from("profiles")
-  .select("id, full_name, username")
+  .select("id, full_name, username, avatar_url")
   .in("id", userIds);
 
 if (profilesError) {
@@ -230,6 +230,21 @@ if (likesError) {
 const author = document.createElement("div");
 
 const profile = profilesMap[post.user_id];
+
+    const avatar = document.createElement("img");
+
+avatar.src = profile?.avatar_url ||
+  "https://placehold.co/45x45/39265a/ffffff?text=TO";
+
+avatar.alt = "Member";
+avatar.style.width = "45px";
+avatar.style.height = "45px";
+avatar.style.borderRadius = "50%";
+avatar.style.objectFit = "cover";
+avatar.style.marginRight = "10px";
+avatar.style.verticalAlign = "middle";
+
+author.appendChild(avatar);
 
 const profileLink = document.createElement("a");
 
