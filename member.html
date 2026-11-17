@@ -1,0 +1,378 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>TAHEERAH ONE - Member Profile</title>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+<style>
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  font-family: Arial, sans-serif;
+  background: #100b20;
+  color: white;
+}
+
+header {
+  background: #1d1235;
+  padding: 18px;
+  color: #d8aaff;
+  font-size: 21px;
+  font-weight: bold;
+}
+
+main {
+  max-width: 650px;
+  margin: 25px auto;
+  padding: 15px;
+}
+
+.profile-card, .post {
+  background: #211735;
+  border: 1px solid #65418c;
+  border-radius: 16px;
+  padding: 20px;
+  margin-bottom: 20px;
+}
+
+.profile-card {
+  text-align: center;
+}
+
+.avatar {
+  width: 120px;
+  height: 120px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 3px solid #c084fc;
+}
+
+h1 {
+  color: #d8aaff;
+}
+
+.username {
+  color: #c69aff;
+}
+
+.stats {
+  display: flex;
+  justify-content: center;
+  gap: 25px;
+  margin: 20px 0;
+}
+
+.stats strong {
+  color: #d8aaff;
+}
+
+button {
+  background: #a855f7;
+  color: white;
+  border: none;
+  padding: 12px 20px;
+  border-radius: 10px;
+  cursor: pointer;
+}
+
+button:disabled {
+  opacity: 0.6;
+}
+
+.post img, .post video {
+  width: 100%;
+  border-radius: 12px;
+  margin-top: 12px;
+}
+
+#message {
+  color: #d8aaff;
+  text-align: center;
+  margin: 15px;
+}
+</style>
+</head>
+
+<body>
+
+<header>TAHEERAH ONE 🌍💜</header>
+
+<main>
+
+<a href="home.html" style="color:#d8aaff;">
+← Back to Home
+</a>
+
+<section class="profile-card">
+
+<img
+id="avatar"
+class="avatar"
+src="https://placehold.co/150x150/39265a/ffffff?text=TO"
+alt="Member profile picture"
+>
+
+<h1 id="fullName">Loading...</h1>
+
+<p class="username" id="username"></p>
+
+<p id="bio"></p>
+
+<div class="stats">
+
+<div>
+<strong id="followersCount">0</strong>
+<br>Followers
+</div>
+
+<div>
+<strong id="followingCount">0</strong>
+<br>Following
+</div>
+
+</div>
+
+<button id="followButton" style="display:none;">
+Follow
+</button>
+
+</section>
+
+<h2 style="color:#d8aaff;">Posts 🌍</h2>
+
+<div id="message"></div>
+
+<div id="posts"></div>
+
+</main>
+
+<script>
+
+const SUPABASE_URL =
+"https://yfkmkjqtgaqbpvjfebog.supabase.co";
+
+const SUPABASE_PUBLISHABLE_KEY =
+"sb_publishable_nJb5URtJy3_LOsEeU4TvcA_JQ_T4uep";
+
+const supabaseClient = window.supabase.createClient(
+  SUPABASE_URL,
+  SUPABASE_PUBLISHABLE_KEY
+);
+
+let currentUser = null;
+let memberId = null;
+
+const message = document.getElementById("message");
+const followButton = document.getElementById("followButton");
+
+async function loadMemberProfile() {
+
+  const params = new URLSearchParams(window.location.search);
+
+  memberId = params.get("id");
+
+  if (!memberId) {
+    message.textContent = "Member not found.";
+    return;
+  }
+
+  const { data: sessionData, error: sessionError } =
+    await supabaseClient.auth.getSession();
+
+  if (sessionError || !sessionData.session) {
+    window.location.href = "auth.html";
+    return;
+  }
+
+  currentUser = sessionData.session.user;
+
+  const { data: profile, error: profileError } =
+    await supabaseClient
+      .from("profiles")
+      .select("*")
+      .eq("id", memberId)
+      .maybeSingle();
+
+  if (profileError) {
+    message.textContent = profileError.message;
+    return;
+  }
+
+  if (!profile) {
+    message.textContent = "This member profile was not found.";
+    return;
+  }
+
+  document.getElementById("fullName").textContent =
+    profile.full_name || "Member";
+
+  document.getElementById("username").textContent =
+    "@" + (profile.username || "user");
+
+  document.getElementById("bio").textContent =
+    profile.bio || "";
+
+  if (profile.avatar_url) {
+    document.getElementById("avatar").src =
+      profile.avatar_url;
+  }
+
+  await loadFollowData();
+  await loadMemberPosts();
+}
+
+async function loadFollowData() {
+
+  const { data: followersData, error } =
+    await supabaseClient
+      .from("followers")
+      .select("follower_id, following_id");
+
+  if (error) {
+    message.textContent = "Follow error: " + error.message;
+    return;
+  }
+
+  const followers = (followersData || []).filter(
+    f => f.following_id === memberId
+  ).length;
+
+  const following = (followersData || []).filter(
+    f => f.follower_id === memberId
+  ).length;
+
+  document.getElementById("followersCount").textContent =
+    followers;
+
+  document.getElementById("followingCount").textContent =
+    following;
+
+  if (currentUser.id === memberId) {
+    followButton.style.display = "none";
+    return;
+  }
+
+  followButton.style.display = "inline-block";
+
+  const isFollowing = (followersData || []).some(
+    f =>
+      f.follower_id === currentUser.id &&
+      f.following_id === memberId
+  );
+
+  followButton.textContent =
+    isFollowing ? "Following" : "Follow";
+
+  followButton.onclick = async function() {
+
+    followButton.disabled = true;
+
+    if (isFollowing) {
+
+      const { error } = await supabaseClient
+        .from("followers")
+        .delete()
+        .eq("follower_id", currentUser.id)
+        .eq("following_id", memberId);
+
+      if (error) {
+        message.textContent = error.message;
+        followButton.disabled = false;
+        return;
+      }
+
+    } else {
+
+      const { error } = await supabaseClient
+        .from("followers")
+        .insert({
+          follower_id: currentUser.id,
+          following_id: memberId
+        });
+
+      if (error) {
+        message.textContent = error.message;
+        followButton.disabled = false;
+        return;
+      }
+    }
+
+    message.textContent = "Follow status updated! 💜";
+
+    await loadFollowData();
+
+    followButton.disabled = false;
+  };
+}
+
+async function loadMemberPosts() {
+
+  const postsContainer = document.getElementById("posts");
+
+  postsContainer.textContent = "Loading posts...";
+
+  const { data, error } = await supabaseClient
+    .from("posts")
+    .select("*")
+    .eq("user_id", memberId)
+    .order("created_at", { ascending: false });
+
+  if (error) {
+    postsContainer.textContent =
+      "Error loading posts: " + error.message;
+    return;
+  }
+
+  postsContainer.innerHTML = "";
+
+  if (!data || data.length === 0) {
+    postsContainer.textContent = "No posts yet.";
+    return;
+  }
+
+  data.forEach(post => {
+
+    const card = document.createElement("div");
+    card.className = "post";
+
+    const caption = document.createElement("p");
+    caption.textContent = post.caption || "";
+
+    card.appendChild(caption);
+
+    if (post.media_url) {
+
+      let media;
+
+      if (post.media_type === "video") {
+        media = document.createElement("video");
+        media.controls = true;
+        media.playsInline = true;
+      } else {
+        media = document.createElement("img");
+        media.alt = "Member post";
+      }
+
+      media.src = post.media_url;
+
+      card.appendChild(media);
+    }
+
+    postsContainer.appendChild(card);
+
+  });
+}
+
+loadMemberProfile();
+
+</script>
+
+</body>
+</html>
