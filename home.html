@@ -163,7 +163,19 @@ button:disabled {
     feed.textContent = "Error loading posts: " + error.message;
     return;
   }
-     const userIds = [...new Set(data.map(post => post.user_id).filter(Boolean))];
+      const { data: commentsData, error: commentsError } = await supabaseClient
+  .from("comments")
+  .select("id, post_id, user_id, content")
+  .in("post_id", data.map(post => post.id));
+
+if (commentsError) {
+  feed.textContent = "Error loading comments: " + commentsError.message;
+  return;
+}
+     const userIds = [...new Set([
+  ...data.map(post => post.user_id),
+  ...(commentsData || []).map(comment => comment.user_id)
+].filter(Boolean))];
 
 const { data: profilesData, error: profilesError } = await supabaseClient
   .from("profiles")
@@ -180,6 +192,15 @@ const profilesMap = {};
 (profilesData || []).forEach(profile => {
   profilesMap[profile.id] = profile;
 }); 
+      const commentsMap = {};
+
+(commentsData || []).forEach(comment => {
+  if (!commentsMap[comment.post_id]) {
+    commentsMap[comment.post_id] = [];
+  }
+
+  commentsMap[comment.post_id].push(comment);
+});
       
       const { data: likesData, error: likesError } = await supabaseClient
   .from("likes")
@@ -284,7 +305,53 @@ likeButton.addEventListener("click", async function() {
 });
 
 card.appendChild(likeButton);
+    const commentInput = document.createElement("textarea");
+commentInput.placeholder = "Write a comment...";
+card.appendChild(commentInput);
 
+const sendCommentButton = document.createElement("button");
+sendCommentButton.textContent = "Send";
+
+sendCommentButton.addEventListener("click", async function() {
+  const content = commentInput.value.trim();
+
+  if (!content) {
+    alert("Please write a comment.");
+    return;
+  }
+
+  const { error } = await supabaseClient
+    .from("comments")
+    .insert({
+      post_id: post.id,
+      user_id: currentUser.id,
+      content: content
+    });
+
+  if (error) {
+    alert(error.message);
+    return;
+  }
+
+  await loadPosts();
+});
+
+card.appendChild(sendCommentButton);
+
+const postComments = commentsMap[post.id] || [];
+
+postComments.forEach(comment => {
+  const commentItem = document.createElement("p");
+  const profile = profilesMap[comment.user_id];
+
+  commentItem.textContent =
+    (profile?.full_name || "Member") +
+    " @" + (profile?.username || "user") +
+    ": " + comment.content;
+
+  card.appendChild(commentItem);
+});
+    
     feed.appendChild(card);
   });
 }
