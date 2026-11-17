@@ -102,7 +102,19 @@ button:disabled {
     <h1>TAHEERAH ONE</h1>
     <p class="tagline">Create once. Connect everywhere.</p>
   </header>
+  
+        <div class="container">
+  <h2>🔍 Find Members</h2>
 
+  <input
+    type="text"
+    id="searchMembersInput"
+    placeholder="Search by name or username..."
+  >
+
+  <div id="memberSearchResults"></div>
+</div>
+  
   <div class="container">
     <h2>Welcome to TAHEERAH ONE 🌍</h2>
     <p id="status">Connecting to your account...</p>
@@ -546,6 +558,66 @@ postComments.forEach(comment => {
     message.textContent = "Error: " + error.message;
   }
 });
+
+    // TAHEERAH ONE MEMBER SEARCH
+
+const searchInput = document.getElementById("searchMembersInput");
+const searchResults = document.getElementById("memberSearchResults");
+
+searchInput.addEventListener("input", async function() {
+  const searchTerm = searchInput.value.trim();
+
+  searchResults.innerHTML = "";
+
+  if (searchTerm.length < 2) {
+    return;
+  }
+
+  searchResults.textContent = "Searching members...";
+
+  const { data, error } = await supabaseClient
+    .from("profiles")
+    .select("id, full_name, username, avatar_url")
+    .or(
+      `full_name.ilike.%${searchTerm}%,username.ilike.%${searchTerm}%`
+    )
+    .limit(20);
+
+  if (error) {
+    searchResults.textContent =
+      "Search error: " + error.message;
+    return;
+  }
+
+  searchResults.innerHTML = "";
+
+  if (!data || data.length === 0) {
+    searchResults.textContent = "No members found.";
+    return;
+  }
+
+  data.forEach(function(member) {
+    const result = document.createElement("div");
+
+    const link = document.createElement("a");
+
+    link.href =
+      "member.html?id=" + encodeURIComponent(member.id);
+
+    link.textContent =
+      (member.full_name || "Member") +
+      " @" + (member.username || "user");
+
+    link.style.color = "#d8aaff";
+    link.style.display = "block";
+    link.style.padding = "10px";
+
+    result.appendChild(link);
+    searchResults.appendChild(result);
+  });
+});
+
+// END MEMBER SEARCH
 
     startApp();
   </script>
