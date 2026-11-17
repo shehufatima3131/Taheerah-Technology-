@@ -231,10 +231,27 @@ const author = document.createElement("div");
 
 const profile = profilesMap[post.user_id];
 
-author.innerHTML = `
-  <strong>${profile?.full_name || "Member"}</strong><br>
-  <span>@${profile?.username || "user"}</span>
-`;
+const profileLink = document.createElement("a");
+
+profileLink.href =
+  "member.html?id=" + encodeURIComponent(post.user_id);
+
+profileLink.textContent =
+  profile?.full_name || "Member";
+
+profileLink.style.color = "#d8aaff";
+profileLink.style.fontWeight = "bold";
+profileLink.style.textDecoration = "none";
+
+author.appendChild(profileLink);
+
+const username = document.createElement("span");
+
+username.textContent =
+  " @" + (profile?.username || "user");
+
+author.appendChild(document.createElement("br"));
+author.appendChild(username);
 
 card.appendChild(author);
     
