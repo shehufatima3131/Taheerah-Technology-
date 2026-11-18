@@ -138,19 +138,36 @@ const status = document.getElementById("status");
 
 async function startChat() {
 
-  const { data: { user }, error } =
-    await supabaseClient.auth.getUser();
+  status.textContent = "Checking login session...";
 
-  if (error || !user) {
-    status.textContent = "Please login first.";
-    return;
+  try {
+
+    const { data, error } =
+      await supabaseClient.auth.getSession();
+
+    if (error) {
+      status.textContent = "Login error: " + error.message;
+      return;
+    }
+
+    const user = data.session?.user;
+
+    if (!user) {
+      status.textContent = "Please login first.";
+      return;
+    }
+
+    currentUser = user;
+
+    status.textContent = "Connected 💜";
+
+    await loadMembers();
+
+  } catch (error) {
+
+    status.textContent = "Connection error: " + error.message;
+
   }
-
-  currentUser = user;
-
-  status.textContent = "Connected 💜";
-
-  await loadMembers();
 }
 
 async function loadMembers() {
