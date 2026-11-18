@@ -1,1 +1,292 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>TAHEERAH ONE | Messages</title>
 
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+  <style>
+    body {
+      background: #100d19;
+      color: white;
+      font-family: Arial, sans-serif;
+      padding: 15px;
+    }
+
+    h1 {
+      color: #d8aaff;
+      text-align: center;
+    }
+
+    .container {
+      max-width: 650px;
+      margin: auto;
+      background: #211832;
+      padding: 18px;
+      border-radius: 15px;
+    }
+
+    select, textarea, button {
+      width: 100%;
+      padding: 13px;
+      margin-top: 12px;
+      border-radius: 9px;
+      box-sizing: border-box;
+      font-size: 16px;
+    }
+
+    select, textarea {
+      background: #100d19;
+      color: white;
+      border: 1px solid #8c65bd;
+    }
+
+    button {
+      background: #a66bea;
+      color: white;
+      border: none;
+      font-weight: bold;
+      cursor: pointer;
+    }
+
+    #chatBox {
+      height: 350px;
+      overflow-y: auto;
+      background: #100d19;
+      padding: 12px;
+      margin-top: 15px;
+      border-radius: 10px;
+    }
+
+    .message {
+      padding: 10px;
+      margin: 9px 0;
+      border-radius: 10px;
+      max-width: 80%;
+      overflow-wrap: anywhere;
+    }
+
+    .sent {
+      background: #7043a5;
+      margin-left: auto;
+    }
+
+    .received {
+      background: #35264b;
+      margin-right: auto;
+    }
+
+    #status {
+      color: #d8aaff;
+      text-align: center;
+    }
+  </style>
+</head>
+
+<body>
+
+  <h1>💌 TAHEERAH ONE</h1>
+
+  <div class="container">
+
+    <h2>Private Messages 🌍</h2>
+
+    <p id="status">Connecting...</p>
+
+    <label>Select a member:</label>
+
+    <select id="memberSelect">
+      <option value="">Choose a member</option>
+    </select>
+
+    <div id="chatBox">
+      Your conversations will appear here.
+    </div>
+
+    <textarea
+      id="messageInput"
+      placeholder="Write your message..."
+      rows="3"
+    ></textarea>
+
+    <button id="sendButton">Send Message 💌</button>
+
+  </div>
+
+<script>
+
+const SUPABASE_URL =
+  "https://yfkmkjqtgaqbpvjfebog.supabase.co";
+
+const SUPABASE_PUBLISHABLE_KEY =
+  sb_publishable_nJb5URtJy3_LOsEeU4TvcA_JQ_T4uep
+
+const supabaseClient = window.supabase.createClient(
+  SUPABASE_URL,
+  SUPABASE_PUBLISHABLE_KEY
+);
+
+let currentUser = null;
+
+const memberSelect = document.getElementById("memberSelect");
+const chatBox = document.getElementById("chatBox");
+const messageInput = document.getElementById("messageInput");
+const sendButton = document.getElementById("sendButton");
+const status = document.getElementById("status");
+
+async function startChat() {
+
+  const { data: { user }, error } =
+    await supabaseClient.auth.getUser();
+
+  if (error || !user) {
+    status.textContent = "Please login first.";
+    return;
+  }
+
+  currentUser = user;
+
+  status.textContent = "Connected 💜";
+
+  await loadMembers();
+}
+
+async function loadMembers() {
+
+  const { data, error } = await supabaseClient
+    .from("profiles")
+    .select("id, full_name, username")
+    .neq("id", currentUser.id)
+    .order("full_name");
+
+  if (error) {
+    status.textContent = "Error loading members: " + error.message;
+    return;
+  }
+
+  memberSelect.innerHTML =
+    '<option value="">Choose a member</option>';
+
+  data.forEach(function(member) {
+
+    const option = document.createElement("option");
+
+    option.value = member.id;
+
+    option.textContent =
+      (member.full_name || "Member") +
+      " @" + (member.username || "user");
+
+    memberSelect.appendChild(option);
+
+  });
+}
+
+async function loadMessages() {
+
+  const otherUserId = memberSelect.value;
+
+  if (!otherUserId) {
+    chatBox.textContent = "Choose a member to start chatting.";
+    return;
+  }
+
+  chatBox.textContent = "Loading messages...";
+
+  const { data, error } = await supabaseClient
+    .from("messages")
+    .select("*")
+    .or(
+      `and(sender_id.eq.${currentUser.id},receiver_id.eq.${otherUserId}),and(sender_id.eq.${otherUserId},receiver_id.eq.${currentUser.id})`
+    )
+    .order("created_at", { ascending: true });
+
+  if (error) {
+    chatBox.textContent = "Error: " + error.message;
+    return;
+  }
+
+  chatBox.innerHTML = "";
+
+  if (!data || data.length === 0) {
+    chatBox.textContent = "No messages yet. Say hello! 💜";
+  } else {
+
+    data.forEach(function(message) {
+
+      const bubble = document.createElement("div");
+
+      bubble.className =
+        "message " +
+        (message.sender_id === currentUser.id
+          ? "sent"
+          : "received");
+
+      bubble.textContent = message.content;
+
+      chatBox.appendChild(bubble);
+
+    });
+
+  }
+
+  chatBox.scrollTop = chatBox.scrollHeight;
+
+  await supabaseClient
+    .from("messages")
+    .update({ is_read: true })
+    .eq("sender_id", otherUserId)
+    .eq("receiver_id", currentUser.id)
+    .eq("is_read", false);
+}
+
+memberSelect.addEventListener("change", loadMessages);
+
+sendButton.addEventListener("click", async function() {
+
+  const receiverId = memberSelect.value;
+  const content = messageInput.value.trim();
+
+  if (!receiverId) {
+    status.textContent = "Please select a member.";
+    return;
+  }
+
+  if (!content) {
+    status.textContent = "Write a message first.";
+    return;
+  }
+
+  sendButton.disabled = true;
+
+  const { error } = await supabaseClient
+    .from("messages")
+    .insert({
+      sender_id: currentUser.id,
+      receiver_id: receiverId,
+      content: content
+    });
+
+  sendButton.disabled = false;
+
+  if (error) {
+    status.textContent = "Message error: " + error.message;
+    return;
+  }
+
+  messageInput.value = "";
+
+  status.textContent = "Message sent! 💜";
+
+  await loadMessages();
+
+});
+
+startChat();
+
+</script>
+
+</body>
+</html>
