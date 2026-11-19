@@ -1,0 +1,259 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>TAHEERAH ONE | Notifications</title>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+<style>
+body {
+  margin: 0;
+  padding: 20px;
+  background: #100d19;
+  color: white;
+  font-family: Arial, sans-serif;
+}
+
+.container {
+  max-width: 650px;
+  margin: auto;
+}
+
+h1 {
+  color: #c69aff;
+  text-align: center;
+}
+
+.notification {
+  background: #211a30;
+  border: 1px solid #63458a;
+  border-radius: 14px;
+  padding: 16px;
+  margin: 12px 0;
+  display: flex;
+  gap: 12px;
+  align-items: center;
+}
+
+.notification.unread {
+  border: 1px solid #c69aff;
+  background: #302044;
+}
+
+.avatar {
+  width: 45px;
+  height: 45px;
+  border-radius: 50%;
+  object-fit: cover;
+  background: #65438b;
+}
+
+.info {
+  flex: 1;
+}
+
+.info p {
+  margin: 5px 0;
+  line-height: 1.5;
+}
+
+.time {
+  font-size: 12px;
+  color: #bda9d5;
+}
+
+button {
+  background: #a66bea;
+  border: none;
+  padding: 9px 12px;
+  border-radius: 8px;
+  color: white;
+  cursor: pointer;
+}
+
+.empty {
+  text-align: center;
+  color: #c69aff;
+  margin-top: 40px;
+}
+</style>
+</head>
+
+<body>
+
+<div class="container">
+
+<h1>🔔 Notifications</h1>
+
+<p style="text-align:center;color:#c69aff">
+TAHEERAH ONE
+</p>
+
+<div id="status">Loading notifications...</div>
+
+<div id="notifications"></div>
+
+</div>
+
+<script>
+
+const SUPABASE_URL =
+"https://yfkmkjqtgaqbpvjfebog.supabase.co";
+
+const SUPABASE_PUBLISHABLE_KEY =
+"sb_publishable_nJb5URtJy3_LOsEeU4TvcA_JQ_T4uep";
+
+const supabaseClient = window.supabase.createClient(
+  SUPABASE_URL,
+  SUPABASE_PUBLISHABLE_KEY
+);
+
+const statusBox = document.getElementById("status");
+const notificationsBox = document.getElementById("notifications");
+
+async function loadNotifications() {
+
+  statusBox.textContent = "Loading notifications...";
+
+  const { data: authData, error: authError } =
+    await supabaseClient.auth.getUser();
+
+  if (authError || !authData.user) {
+    statusBox.textContent = "Please login first.";
+    return;
+  }
+
+  const user = authData.user;
+
+  const { data, error } = await supabaseClient
+    .from("notifications")
+    .select("*")
+    .eq("recipient_id", user.id)
+    .order("created_at", { ascending: false });
+
+  if (error) {
+    statusBox.textContent =
+      "Error: " + error.message;
+    return;
+  }
+
+  notificationsBox.innerHTML = "";
+
+  if (!data || data.length === 0) {
+    statusBox.innerHTML =
+      '<p class="empty">No notifications yet 💜</p>';
+    return;
+  }
+
+  const actorIds = [...new Set(
+    data.map(item => item.actor_id)
+  )];
+
+  const { data: profiles, error: profileError } =
+    await supabaseClient
+      .from("profiles")
+      .select("id, full_name, username, avatar_url")
+      .in("id", actorIds);
+
+  if (profileError) {
+    statusBox.textContent =
+      "Profile error: " + profileError.message;
+    return;
+  }
+
+  const profilesMap = {};
+
+  (profiles || []).forEach(profile => {
+    profilesMap[profile.id] = profile;
+  });
+
+  statusBox.textContent = "Your Notifications 💜";
+
+  data.forEach(item => {
+
+    const profile = profilesMap[item.actor_id];
+
+    const name = profile?.full_name || "A member";
+
+    let message = "";
+
+    if (item.type === "like") {
+      message = "liked your post ❤️";
+    } else if (item.type === "comment") {
+      message = "commented on your post 💬";
+    } else if (item.type === "follow") {
+      message = "started following you 👥";
+    } else {
+      message = "interacted with you";
+    }
+
+    const card = document.createElement("div");
+
+    card.className =
+      "notification" + (item.is_read ? "" : " unread");
+
+    const avatar = document.createElement("img");
+
+    avatar.className = "avatar";
+    avatar.src = profile?.avatar_url ||
+      "https://placehold.co/100x100?text=TO";
+
+    const info = document.createElement("div");
+    info.className = "info";
+
+    const text = document.createElement("p");
+
+    text.textContent = name + " " + message;
+
+    const time = document.createElement("div");
+    time.className = "time";
+
+    time.textContent =
+      new Date(item.created_at).toLocaleString();
+
+    info.appendChild(text);
+    info.appendChild(time);
+
+    card.appendChild(avatar);
+    card.appendChild(info);
+
+    if (!item.is_read) {
+
+      const button = document.createElement("button");
+
+      button.textContent = "Mark read";
+
+      button.onclick = async () => {
+
+        const { error } = await supabaseClient
+          .from("notifications")
+          .update({ is_read: true })
+          .eq("id", item.id)
+          .eq("recipient_id", user.id);
+
+        if (error) {
+          alert(error.message);
+          return;
+        }
+
+        loadNotifications();
+      };
+
+      card.appendChild(button);
+    }
+
+    notificationsBox.appendChild(card);
+
+  });
+
+}
+
+loadNotifications();
+
+</script>
+
+</body>
+</html>
