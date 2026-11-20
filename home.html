@@ -532,7 +532,8 @@ postComments.forEach(comment => {
           "Welcome, " + name + "! Your account is connected. 💜";
         
         await loadPosts();
-  
+        await loadStories();
+        
       } catch (error) {
         status.textContent =
           "Connection error: " + error.message;
