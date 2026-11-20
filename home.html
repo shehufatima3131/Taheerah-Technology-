@@ -664,46 +664,89 @@ searchInput.addEventListener("input", async function() {
 
     // TAHEERAH ONE STORIES
     
-async function loadStories() {
-  const storiesFeed = document.getElementById("storiesFeed");
+       async function loadStories() {
+const storiesFeed = document.getElementById("storiesFeed");
 
-  storiesFeed.innerHTML = "Loading stories...";
+storiesFeed.innerHTML = "Loading stories...";
 
-  const { data, error } = await supabaseClient
-    .from("stories")
-    .select("id, media_url, user_id, media_type, expires_at")
-    .gt("expires_at", new Date().toISOString());
+const { data, error } = await supabaseClient
+.from("stories")
+.select("id, media_url, user_id, media_type, expires_at")
+.gt("expires_at", new Date().toISOString());
 
-  if (error) {
-    storiesFeed.textContent = "Error: " + error.message;
-    return;
-  }
-
-  storiesFeed.innerHTML = "";
-
-  if (!data || data.length === 0) {
-    storiesFeed.textContent = "No active stories yet. Be the first! 💜";
-    return;
-  }
-
-  data.forEach(story => {
-    const media = document.createElement(
-      story.media_type === "video" ? "video" : "img"
-    );
-
-    media.src = story.media_url;
-    media.style.width = "180px";
-    media.style.height = "220px";
-    media.style.objectFit = "cover";
-    media.style.margin = "10px";
-
-    if (story.media_type === "video") {
-      media.controls = true;
-    }
-
-    storiesFeed.appendChild(media);
-  });
+if (error) {
+storiesFeed.textContent = "Error: " + error.message;
+return;
 }
+
+storiesFeed.innerHTML = "";
+
+if (!data || data.length === 0) {
+storiesFeed.textContent = "No active stories yet. Be the first! 💜";
+return;
+}
+
+data.forEach(story => {
+const media = document.createElement(
+story.media_type === "video" ? "video" : "img"
+);
+
+media.src = story.media_url;
+media.style.width = "100px";
+media.style.height = "140px";
+media.style.objectFit = "cover";
+media.style.margin = "8px";
+media.style.borderRadius = "12px";
+media.style.cursor = "pointer";
+
+if (story.media_type === "video") {
+  media.muted = true;
+  media.playsInline = true;
+}
+
+media.addEventListener("click", function() {
+  const viewer = document.getElementById("storyViewer");
+  const content = document.getElementById("storyViewerContent");
+
+  content.innerHTML = "";
+
+  const fullMedia = document.createElement(
+    story.media_type === "video" ? "video" : "img"
+  );
+
+  fullMedia.src = story.media_url;
+  fullMedia.style.maxWidth = "95vw";
+  fullMedia.style.maxHeight = "80vh";
+  fullMedia.style.objectFit = "contain";
+
+  if (story.media_type === "video") {
+    fullMedia.controls = true;
+    fullMedia.autoplay = true;
+    fullMedia.playsInline = true;
+  }
+
+  content.appendChild(fullMedia);
+  viewer.style.display = "flex";
+});
+
+storiesFeed.appendChild(media);
+
+});
+}
+
+document.getElementById("closeStoryViewer").addEventListener("click", function() {
+const viewer = document.getElementById("storyViewer");
+const content = document.getElementById("storyViewerContent");
+
+viewer.style.display = "none";
+
+const video = content.querySelector("video");
+if (video) video.pause();
+
+content.innerHTML = "";
+
+  });
+
 
 document.getElementById("storyButton").addEventListener("click", async function() {
   const file = document.getElementById("storyMedia").files[0];
