@@ -662,6 +662,106 @@ searchInput.addEventListener("input", async function() {
 
 // END MEMBER SEARCH
 
+    // TAHEERAH ONE STORIES
+    
+async function loadStories() {
+  const storiesFeed = document.getElementById("storiesFeed");
+
+  storiesFeed.innerHTML = "Loading stories...";
+
+  const { data, error } = await supabaseClient
+    .from("stories")
+    .select("id, media_url, user_id, media_type, expires_at")
+    .gt("expires_at", new Date().toISOString());
+
+  if (error) {
+    storiesFeed.textContent = "Error: " + error.message;
+    return;
+  }
+
+  storiesFeed.innerHTML = "";
+
+  if (!data || data.length === 0) {
+    storiesFeed.textContent = "No active stories yet. Be the first! 💜";
+    return;
+  }
+
+  data.forEach(story => {
+    const media = document.createElement(
+      story.media_type === "video" ? "video" : "img"
+    );
+
+    media.src = story.media_url;
+    media.style.width = "180px";
+    media.style.height = "220px";
+    media.style.objectFit = "cover";
+    media.style.margin = "10px";
+
+    if (story.media_type === "video") {
+      media.controls = true;
+    }
+
+    storiesFeed.appendChild(media);
+  });
+}
+
+document.getElementById("storyButton").addEventListener("click", async function() {
+  const file = document.getElementById("storyMedia").files[0];
+  const message = document.getElementById("storyMessage");
+
+  if (!currentUser) {
+    message.textContent = "Please log in first.";
+    return;
+  }
+
+  if (!file) {
+    message.textContent = "Choose a photo or video first.";
+    return;
+  }
+
+  message.textContent = "Uploading Story... 💜";
+
+  try {
+    const filePath = currentUser.id + "/" + Date.now() + "-" +
+      file.name.replace(/[^a-zA-Z0-9._-]/g, "_");
+
+    const { error: uploadError } = await supabaseClient
+      .storage.from("story-media")
+      .upload(filePath, file);
+
+    if (uploadError) throw uploadError;
+
+    const { data: urlData } = supabaseClient
+      .storage.from("story-media")
+      .getPublicUrl(filePath);
+
+    const expiresAt = new Date(
+      Date.now() + 24 * 60 * 60 * 1000
+    ).toISOString();
+
+    const { error } = await supabaseClient
+      .from("stories")
+      .insert({
+        user_id: currentUser.id,
+        media_url: urlData.publicUrl,
+        media_type: file.type.startsWith("video/") ? "video" : "image",
+        expires_at: expiresAt
+      });
+
+    if (error) throw error;
+
+    document.getElementById("storyMedia").value = "";
+    message.textContent = "Your Story is live! 🎉💜";
+
+    await loadStories();
+
+  } catch (error) {
+    message.textContent = "Story error: " + error.message;
+  }
+});
+
+// END TAHEERAH ONE STORIES
+   
     startApp();
   </script>
 
