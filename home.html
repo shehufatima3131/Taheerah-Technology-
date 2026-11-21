@@ -208,7 +208,24 @@ button:disabled {
     border-radius:50%;
   ">✕</button>
 
-  <div id="storyViewerContent"></div>
+  <div id="storyProgress" style="
+  position:absolute;
+  top:15px;
+  left:10px;
+  right:60px;
+  height:4px;
+  background:#555;
+  border-radius:10px;
+  overflow:hidden;
+">
+  <div id="storyProgressFill" style="
+    width:0%;
+    height:100%;
+    background:white;
+  "></div>
+</div>
+
+<div id="storyViewerContent"></div>
 </div>
 <div class="container">
   <h2>Explore Posts 🌍</h2>
