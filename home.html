@@ -745,12 +745,16 @@ if (story.media_type === "video") {
   media.muted = true;
   media.playsInline = true;
 }
-
+  
 media.addEventListener("click", function() {
   const viewer = document.getElementById("storyViewer");
   const content = document.getElementById("storyViewerContent");
+  const progressFill = document.getElementById("storyProgressFill");
 
   content.innerHTML = "";
+
+  progressFill.style.transition = "none";
+  progressFill.style.width = "0%";
 
   const fullMedia = document.createElement(
     story.media_type === "video" ? "video" : "img"
@@ -765,11 +769,27 @@ media.addEventListener("click", function() {
     fullMedia.controls = true;
     fullMedia.autoplay = true;
     fullMedia.playsInline = true;
+
+    fullMedia.addEventListener("timeupdate", function() {
+      if (fullMedia.duration) {
+        const progress =
+          (fullMedia.currentTime / fullMedia.duration) * 100;
+
+        progressFill.style.width = progress + "%";
+      }
+    });
+
+  } else {
+    requestAnimationFrame(function() {
+      progressFill.style.transition = "width 5s linear";
+      progressFill.style.width = "100%";
+    });
   }
 
   content.appendChild(fullMedia);
   viewer.style.display = "flex";
 });
+
 
 storiesFeed.appendChild(media);
 
