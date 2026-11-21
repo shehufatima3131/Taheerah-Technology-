@@ -218,14 +218,134 @@ button:disabled {
   border-radius:10px;
   overflow:hidden;
 ">
-  <div id="storyProgressFill" style="
-    width:0%;
-    height:100%;
-    background:white;
-  "></div>
-</div>
+  <div id="storyViewer" style="
+  display:none;
+  position:fixed;
+  inset:0;
+  background:#000;
+  z-index:9999;
+  justify-content:center;
+  align-items:center;
+  flex-direction:column;
+">
 
-<div id="storyViewerContent"></div>
+  <!-- STORY PROGRESS -->
+  <div id="storyProgress" style="
+    position:absolute;
+    top:12px;
+    left:10px;
+    right:10px;
+    height:4px;
+    background:#555;
+    border-radius:10px;
+    overflow:hidden;
+  ">
+    <div id="storyProgressFill" style="
+      width:0%;
+      height:100%;
+      background:white;
+    "></div>
+  </div>
+
+  <!-- STORY HEADER -->
+  <div style="
+    position:absolute;
+    top:28px;
+    left:12px;
+    right:60px;
+    display:flex;
+    align-items:center;
+    gap:10px;
+  ">
+
+    <img
+      id="storyViewerAvatar"
+      src="https://placehold.co/100x100?text=TO"
+      style="
+        width:40px;
+        height:40px;
+        border-radius:50%;
+        object-fit:cover;
+      "
+    >
+
+    <div>
+      <div id="storyViewerUsername" style="
+        color:white;
+        font-weight:bold;
+      ">Member</div>
+
+      <div id="storyViewerTime" style="
+        color:#ccc;
+        font-size:12px;
+      ">Just now</div>
+    </div>
+
+  </div>
+
+  <!-- CLOSE BUTTON -->
+  <button id="closeStoryViewer" style="
+    position:absolute;
+    top:35px;
+    right:15px;
+    padding:10px;
+    font-size:22px;
+    color:white;
+    background:#333;
+    border:none;
+    border-radius:50%;
+  ">✕</button>
+
+  <!-- STORY CONTENT -->
+  <div id="storyViewerContent" style="
+    width:100%;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+  "></div>
+
+  <!-- STORY REPLY -->
+  <div style="
+    position:absolute;
+    bottom:20px;
+    left:12px;
+    right:12px;
+    display:flex;
+    align-items:center;
+    gap:10px;
+  ">
+
+    <input
+      id="storyReplyInput"
+      type="text"
+      placeholder="Send message"
+      style="
+        flex:1;
+        padding:13px;
+        border:1px solid white;
+        border-radius:25px;
+        background:transparent;
+        color:white;
+      "
+    >
+
+    <button id="storyLikeButton"
+      style="background:transparent;border:none;color:white;font-size:25px;">
+      ♡
+    </button>
+
+    <button id="storyCommentButton"
+      style="background:transparent;border:none;color:white;font-size:23px;">
+      💬
+    </button>
+
+    <button id="storyShareButton"
+      style="background:transparent;border:none;color:white;font-size:23px;">
+      ➤
+    </button>
+
+  </div>
+
 </div>
 <div class="container">
   <h2>Explore Posts 🌍</h2>
