@@ -845,12 +845,37 @@ return;
 storiesFeed.innerHTML = "";
 
 if (!data || data.length === 0) {
-storiesFeed.textContent = "No active stories yet. Be the first! 💜";
-return;
+  storiesFeed.textContent = "No active stories yet. Be the first! 💜";
+  return;
 }
+
+const userIds = [...new Set(data.map(story => story.user_id))];
+
+const { data: profilesData, error: profilesError } = await supabaseClient
+  .from("profiles")
+  .select("id, full_name, username, avatar_url")
+  .in("id", userIds);
+
+if (profilesError) {
+  console.log("Profiles error:", profilesError.message);
+}
+
+const profilesMap = {};
+
+(profilesData || []).forEach(profile => {
+  profilesMap[profile.id] = profile;
+});
 
 data.forEach(story => {
   
+   const profile = profilesMap[story.user_id] || {};
+
+const storyUsername =
+  profile.username || profile.full_name || "Member";
+
+const storyAvatar =
+  profile.avatar_url || "https://placehold.co/100x100?text=TO";
+ 
   const storyTime = new Date(story.created_at);
 const now = new Date();
 
@@ -893,8 +918,20 @@ media.addEventListener("click", function() {
 
   content.innerHTML = "";
 
-  progressFill.style.transition = "none";
-  progressFill.style.width = "0%";
+// STORY USERNAME
+document.getElementById("storyViewerUsername").textContent =
+  storyUsername;
+
+// STORY TIME
+document.getElementById("storyViewerTime").textContent =
+  timeText;
+
+// STORY PROFILE PICTURE
+document.getElementById("storyViewerAvatar").src =
+  storyAvatar;
+
+progressFill.style.transition = "none";
+progressFill.style.width = "0%";
 
   const fullMedia = document.createElement(
     story.media_type === "video" ? "video" : "img"
