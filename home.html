@@ -729,6 +729,25 @@ return;
 }
 
 data.forEach(story => {
+  
+  const storyTime = new Date(story.created_at);
+const now = new Date();
+
+const minutesAgo = Math.floor(
+  (now - storyTime) / 60000
+);
+
+let timeText = "";
+
+if (minutesAgo < 1) {
+  timeText = "Just now";
+} else if (minutesAgo < 60) {
+  timeText = minutesAgo + " min ago";
+} else if (minutesAgo < 1440) {
+  timeText = Math.floor(minutesAgo / 60) + " hr ago";
+} else {
+  timeText = Math.floor(minutesAgo / 1440) + " days ago";
+}
 const media = document.createElement(
 story.media_type === "video" ? "video" : "img"
 );
@@ -791,7 +810,21 @@ media.addEventListener("click", function() {
 });
 
 
-storiesFeed.appendChild(media);
+const storyCard = document.createElement("div");
+
+storyCard.style.display = "inline-block";
+storyCard.style.textAlign = "center";
+
+const timeLabel = document.createElement("p");
+timeLabel.textContent = timeText;
+timeLabel.style.color = "white";
+timeLabel.style.fontSize = "12px";
+timeLabel.style.margin = "0";
+
+storyCard.appendChild(media);
+storyCard.appendChild(timeLabel);
+
+storiesFeed.appendChild(storyCard);
 
 });
 }
