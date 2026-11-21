@@ -185,6 +185,31 @@ button:disabled {
 
   <div id="storiesFeed"></div>
 </div>
+
+   <div id="storyViewer" style="
+  display:none;
+  position:fixed;
+  inset:0;
+  background:#000;
+  z-index:9999;
+  justify-content:center;
+  align-items:center;
+  flex-direction:column;
+">
+  <button id="closeStoryViewer" style="
+    position:absolute;
+    top:20px;
+    right:20px;
+    padding:12px;
+    font-size:22px;
+    color:white;
+    background:#333;
+    border:none;
+    border-radius:50%;
+  ">✕</button>
+
+  <div id="storyViewerContent"></div>
+</div>
 <div class="container">
   <h2>Explore Posts 🌍</h2>
   <div id="feed"></div>
