@@ -713,8 +713,9 @@ storiesFeed.innerHTML = "Loading stories...";
 
 const { data, error } = await supabaseClient
 .from("stories")
-.select("id, media_url, user_id, media_type, expires_at")
+.select("id, media_url, user_id, media_type, expires_at, created_at")
 .gt("expires_at", new Date().toISOString());
+
 
 if (error) {
 storiesFeed.textContent = "Error: " + error.message;
